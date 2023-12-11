@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,12 +49,19 @@ public class Store {
   // shows if it is currently open or close
   private boolean isCurrentlyOpen;
 
+  // store create & update - date and time
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
+
+  // store status, if active, customers can book
+  private boolean isActive;
+
   // relationship with member
 
 
 
   // update store information
-  public void update(UpdateStoreDto updateStoreDto) {
+  public void updateInfo(UpdateStoreDto updateStoreDto) {
     if (updateStoreDto.getName() != null) {
       this.name = updateStoreDto.getName();
     }
@@ -75,7 +83,12 @@ public class Store {
     if (updateStoreDto.getCloseTime() != null) {
       this.closeTime = updateStoreDto.getCloseTime();
     }
+
+    this.updatedAt = LocalDateTime.now();
   }
 
 
+  public void updateStatus(boolean isActive) {
+    this.isActive = isActive;
+  }
 }
