@@ -53,12 +53,15 @@ public class Store {
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
+  // store status, if active, customers can book
+  private boolean isActive;
+
   // relationship with member
 
 
 
   // update store information
-  public void update(UpdateStoreDto updateStoreDto) {
+  public void updateInfo(UpdateStoreDto updateStoreDto) {
     if (updateStoreDto.getName() != null) {
       this.name = updateStoreDto.getName();
     }
@@ -85,4 +88,7 @@ public class Store {
   }
 
 
+  public void updateStatus(boolean isActive) {
+    this.isActive = isActive;
+  }
 }
