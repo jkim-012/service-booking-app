@@ -6,6 +6,7 @@ import com.example.bookingsystem.store.dto.UpdateStoreDto;
 import com.example.bookingsystem.store.entity.Store;
 import com.example.bookingsystem.store.repository.StoreRepository;
 import com.example.bookingsystem.store.service.StoreService;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class StoreServiceImpl implements StoreService {
         .location(newStoreDto.getLocation())
         .openTime(newStoreDto.getOpenTime()) //HH:mm:ss
         .closeTime(newStoreDto.getCloseTime()) //HH:mm:ss
+        .createdAt(LocalDateTime.now())
         .build();
 
     // save the new store

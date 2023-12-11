@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,6 +49,10 @@ public class Store {
   // shows if it is currently open or close
   private boolean isCurrentlyOpen;
 
+  // store create & update - date and time
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
+
   // relationship with member
 
 
@@ -75,6 +80,8 @@ public class Store {
     if (updateStoreDto.getCloseTime() != null) {
       this.closeTime = updateStoreDto.getCloseTime();
     }
+
+    this.updatedAt = LocalDateTime.now();
   }
 
 
