@@ -20,11 +20,16 @@ public class NewStoreDto {
 
   @NotBlank
   private String name;
+
   @NotBlank
   private String description;
 
   @NotBlank
+  private String phone;
+
+  @NotBlank
   private String location;
+
   @NotBlank
   @Size(min = 6 , max = 6, message = "Zipcode must be 6 characters")
   private String zipcode;
