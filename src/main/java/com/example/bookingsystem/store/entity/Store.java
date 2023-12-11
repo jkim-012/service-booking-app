@@ -1,5 +1,6 @@
 package com.example.bookingsystem.store.entity;
 
+import com.example.bookingsystem.store.dto.UpdateStoreDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +22,7 @@ public class Store {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long storeId;
+  private Long id;
 
   @NotBlank
   private String name;
@@ -48,5 +49,33 @@ public class Store {
   private boolean isCurrentlyOpen;
 
   // relationship with member
+
+
+
+  // update store information
+  public void update(UpdateStoreDto updateStoreDto) {
+    if (updateStoreDto.getName() != null) {
+      this.name = updateStoreDto.getName();
+    }
+    if (updateStoreDto.getDescription() != null) {
+      this.description = updateStoreDto.getDescription();
+    }
+    if (updateStoreDto.getPhone() != null) {
+      this.phone = updateStoreDto.getPhone();
+    }
+    if (updateStoreDto.getLocation() != null) {
+      this.location = updateStoreDto.getLocation();
+    }
+    if (updateStoreDto.getZipcode() != null) {
+      this.zipcode = updateStoreDto.getZipcode();
+    }
+    if (updateStoreDto.getOpenTime() != null) {
+      this.openTime = updateStoreDto.getOpenTime();
+    }
+    if (updateStoreDto.getCloseTime() != null) {
+      this.closeTime = updateStoreDto.getCloseTime();
+    }
+  }
+
 
 }

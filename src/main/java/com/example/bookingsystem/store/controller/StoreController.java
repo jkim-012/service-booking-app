@@ -6,6 +6,7 @@ import com.example.bookingsystem.store.service.StoreService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,15 @@ public class StoreController {
 
     storeService.addStore(newStoreDto);
     return ResponseEntity.ok("New store added successfully");
+  }
+
+
+  // API endpoint for updating the existed store information
+  @PutMapping("/info/{id}")
+  public ResponseEntity<?> updateStoreInfo(@PathVariable Long id, @RequestBody @Valid UpdateStoreDto updateStoreDto){
+
+    storeService.updateStoreInfo(id, updateStoreDto);
+    return ResponseEntity.ok("Store information updated successfully");
   }
 
 }
