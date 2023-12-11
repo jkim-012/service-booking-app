@@ -20,6 +20,7 @@ public class StoreServiceImpl implements StoreService {
     Store store = Store.builder()
         .name(newStoreDto.getName())
         .description(newStoreDto.getDescription())
+        .phone(newStoreDto.getPhone())
         .zipcode(newStoreDto.getZipcode())
         .location(newStoreDto.getLocation())
         .openTime(newStoreDto.getOpenTime()) //HH:mm:ss

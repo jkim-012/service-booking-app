@@ -25,11 +25,16 @@ public class Store {
 
   @NotBlank
   private String name;
+
   @NotBlank
   private String description;
 
   @NotBlank
+  private String phone;
+
+  @NotBlank
   private String location;
+
   @NotBlank
   private String zipcode;
 
@@ -39,7 +44,8 @@ public class Store {
   @NotNull
   private Time closeTime;
 
-  private boolean isCurrentlyOpen; //current status
+  // shows if it is currently open or close
+  private boolean isCurrentlyOpen;
 
   // relationship with member
 
