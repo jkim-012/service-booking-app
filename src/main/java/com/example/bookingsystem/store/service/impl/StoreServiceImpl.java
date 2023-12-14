@@ -3,7 +3,7 @@ package com.example.bookingsystem.store.service.impl;
 import com.example.bookingsystem.exception.StoreNotFoundException;
 import com.example.bookingsystem.store.dto.NewStoreDto;
 import com.example.bookingsystem.store.dto.UpdateStoreDto;
-import com.example.bookingsystem.store.entity.Store;
+import com.example.bookingsystem.store.domain.Store;
 import com.example.bookingsystem.store.repository.StoreRepository;
 import com.example.bookingsystem.store.service.StoreService;
 import java.time.LocalDateTime;

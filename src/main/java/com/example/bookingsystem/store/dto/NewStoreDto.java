@@ -18,26 +18,26 @@ public class NewStoreDto {
 
   // Required information when adding a new store
 
-  @NotBlank
+  @NotBlank(message = "Store name is a required field.")
   private String name;
 
-  @NotBlank
+  @NotBlank(message = "Store description is a required field.")
   private String description;
 
-  @NotBlank
+  @NotBlank(message = "Phone number is a required field.")
   private String phone;
 
-  @NotBlank
+  @NotBlank(message = "Store location is a required field.")
   private String location;
 
-  @NotBlank
+  @NotBlank(message = "Store zipcode is a required field.")
   @Size(min = 6 , max = 6, message = "Zipcode must be 6 characters")
   private String zipcode;
 
   // operation hours
-  @NotNull
+  @NotNull(message = "Open time cannot be null")
   private Time openTime;
-  @NotNull
+  @NotNull(message = "Close time cannot be null")
   private Time closeTime;
 
 }
