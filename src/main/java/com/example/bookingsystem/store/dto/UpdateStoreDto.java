@@ -1,7 +1,7 @@
 package com.example.bookingsystem.store.dto;
 
-import jakarta.validation.constraints.Size;
 import java.sql.Time;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
