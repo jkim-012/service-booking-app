@@ -2,7 +2,7 @@ package com.example.bookingsystem.member.controller;
 
 import com.example.bookingsystem.member.dto.NewMemberDto;
 import com.example.bookingsystem.member.service.MemberService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

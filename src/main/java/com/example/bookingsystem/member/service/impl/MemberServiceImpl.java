@@ -6,6 +6,7 @@ import com.example.bookingsystem.member.dto.NewMemberDto;
 import com.example.bookingsystem.member.repository.MemberRepository;
 import com.example.bookingsystem.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService {
 
   private final MemberRepository memberRepository;
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   public void register(NewMemberDto newMemberDto) {
@@ -23,10 +25,13 @@ public class MemberServiceImpl implements MemberService {
           newMemberDto.getEmail() + " is already registered. Please use a different email address.");
     }
 
+    // password encoding
+    String encodedPw = passwordEncoder.encode(newMemberDto.getPassword());
+
     // new member object
     Member member = Member.builder()
         .email(newMemberDto.getEmail())
-        .password(newMemberDto.getPassword())
+        .password(encodedPw)
         .firstName(newMemberDto.getFirstName())
         .lastName(newMemberDto.getLastName())
         .displayName(newMemberDto.getDisplayName())
