@@ -1,14 +1,17 @@
-package com.example.bookingsystem.store.entity;
+package com.example.bookingsystem.store.domain;
 
+import com.example.bookingsystem.member.domain.Member;
 import com.example.bookingsystem.store.dto.UpdateStoreDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.sql.Time;
 import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,7 +59,10 @@ public class Store {
   // store status, if active, customers can book
   private boolean isActive;
 
-  // relationship with member
+  // mapping
+  @ManyToOne
+  @JoinColumn(name = "member_id")
+  private Member member;
 
 
 
@@ -87,7 +93,7 @@ public class Store {
     this.updatedAt = LocalDateTime.now();
   }
 
-
+  // update store status
   public void updateStatus(boolean isActive) {
     this.isActive = isActive;
   }

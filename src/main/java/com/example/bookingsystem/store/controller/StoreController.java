@@ -3,7 +3,7 @@ package com.example.bookingsystem.store.controller;
 import com.example.bookingsystem.store.dto.NewStoreDto;
 import com.example.bookingsystem.store.dto.UpdateStoreDto;
 import com.example.bookingsystem.store.service.StoreService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
