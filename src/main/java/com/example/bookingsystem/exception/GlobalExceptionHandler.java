@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler
-  public ResponseEntity<String> handleStoreNotFoundException(StoreNotFoundException e){
+  public ResponseEntity<String> handleBusinessNotFoundException(BusinessNotFoundException e){
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
   }
 

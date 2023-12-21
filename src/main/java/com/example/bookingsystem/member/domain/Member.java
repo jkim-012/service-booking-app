@@ -1,6 +1,6 @@
 package com.example.bookingsystem.member.domain;
 
-import com.example.bookingsystem.store.domain.Store;
+import com.example.bookingsystem.business.domain.Business;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Entity;
@@ -29,7 +29,7 @@ public class Member {
   private Long id;
 
   @NotBlank
-  private String email;
+  private String email; // login username
   @NotBlank
   private String password;
 
@@ -53,6 +53,6 @@ public class Member {
 
   // mapping
   @OneToMany(mappedBy = "member")
-  private List<Store> storeList;
+  private List<Business> storeList;
 
 }
