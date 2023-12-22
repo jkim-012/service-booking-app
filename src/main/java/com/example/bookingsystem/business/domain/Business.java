@@ -108,7 +108,10 @@ public class Business {
   }
 
   // update business status
-  public void updateStatus(boolean isActive) {
+  public void updateActiveStatus(boolean isActive) {
     this.isActive = isActive;
+  }
+  public void updateOpenStatus(boolean isCurrentlyOpen) {
+    this.isCurrentlyOpen = isCurrentlyOpen;
   }
 }

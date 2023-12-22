@@ -19,7 +19,6 @@ public class BusinessServiceImpl implements BusinessService {
 
   @Override
   public BusinessDetailDto addBusiness(NewBusinessDto newBusinessDto) {
-
     // create a new business entity
     Business business = Business.createBusiness(newBusinessDto);
     // save
@@ -30,7 +29,6 @@ public class BusinessServiceImpl implements BusinessService {
   @Override
   @Transactional
   public UpdateAddressDto.Response updateAddress(Long id, UpdateAddressDto.Request request) {
-
     // find the business
     Business business = businessRepository.findById(id)
         .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
@@ -43,11 +41,20 @@ public class BusinessServiceImpl implements BusinessService {
   @Override
   @Transactional
   public void updateBusinessStatus(Long id, boolean isActive) {
-
     // find the store by id
     Business business = businessRepository.findById(id)
-        .orElseThrow(()-> new BusinessNotFoundException("Store doesn't exist."));
+        .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
     // update status
-    business.updateStatus(isActive);
+    business.updateActiveStatus(isActive);
+  }
+
+  @Override
+  @Transactional
+  public void openBusinessStatus(Long id, boolean isCurrentlyOpen) {
+    // find the store by id
+    Business business = businessRepository.findById(id)
+        .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
+    // update status
+    business.updateOpenStatus(isCurrentlyOpen);
   }
 }

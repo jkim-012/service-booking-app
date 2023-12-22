@@ -43,13 +43,22 @@ public class BusinessController {
     return ResponseEntity.ok(response);
   }
 
-  // API endpoint for updating store active status
+  // API endpoint for updating business active status
   @PatchMapping("/{id}/active-status")
   public ResponseEntity<?> activateBusiness(@PathVariable Long id,
       @RequestParam boolean isActive) {
 
     businessService.updateBusinessStatus(id, isActive);
-    return ResponseEntity.ok("Business is now active");
+    return ResponseEntity.ok("Business is now active.");
+  }
+
+  // API endpoint for updating business open status
+  @PatchMapping("/{id}/oepn-status")
+  public ResponseEntity<?> openBusiness(@PathVariable Long id,
+      @RequestParam boolean isCurrentlyOpen) {
+
+    businessService.openBusinessStatus(id, isCurrentlyOpen);
+    return ResponseEntity.ok("Business is now open.");
   }
 
 
