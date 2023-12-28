@@ -50,6 +50,7 @@ public class BusinessDetailDto {
     return BusinessDetailDto.builder()
         .id(business.getId())
         .name(business.getName())
+        .description(business.getDescription())
         .phone(business.getPhone())
         .province(business.getProvince())
         .city(business.getCity())

@@ -97,7 +97,7 @@ public class Business {
   }
 
   // update business address information
-  public void updateAddress(UpdateAddressDto.Request request) {
+  public void changeAddress(UpdateAddressDto.Request request) {
     if (request.getProvince() != null) {
       this.province = request.getProvince();
     }
@@ -113,21 +113,21 @@ public class Business {
   }
 
   // update business status
-  public void updateActiveStatus(boolean isActive) {
+  public void changeActiveStatus(boolean isActive) {
     this.isActive = isActive;
   }
 
   // update open status
-  public void updateOpenStatus(boolean isCurrentlyOpen) {
+  public void changeOpenStatus(boolean isCurrentlyOpen) {
     this.isCurrentlyOpen = isCurrentlyOpen;
   }
 
-  public void updateHours(UpdateHoursDto updateHoursDto) {
+  public void changeHours(UpdateHoursDto updateHoursDto) {
     this.openTime = updateHoursDto.getOpenTime();
     this.closeTime = updateHoursDto.getCloseTime();
   }
 
-  public void updateBasicInfo(UpdateBasicInfoDto updateBasicInfoDto) {
+  public void changeBasicInfo(UpdateBasicInfoDto updateBasicInfoDto) {
     if (updateBasicInfoDto.getName() != null){
       this.name = updateBasicInfoDto.getName();
     }

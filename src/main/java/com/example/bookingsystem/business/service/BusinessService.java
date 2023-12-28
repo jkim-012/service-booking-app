@@ -15,5 +15,5 @@ public interface BusinessService {
   void updateOpenStatus(Long businessId, boolean isCurrentlyOpen);
   void updateHours(Long businessId, UpdateHoursDto updateHoursDto);
   void updateBasicInfo(Long businessId, UpdateBasicInfoDto updateBasicInfoDto);
-
+  BusinessDetailDto findBusiness(Long businessId);
 }

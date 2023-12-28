@@ -9,6 +9,7 @@ import com.example.bookingsystem.business.service.BusinessService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +52,7 @@ public class BusinessController {
       @PathVariable Long businessId,
       @RequestParam boolean isActive) {
     businessService.updateActiveStatus(businessId, isActive);
-    return ResponseEntity.ok("Business is now active.");
+    return ResponseEntity.ok("Business active status is updated.");
   }
 
   // API endpoint for updating business open status
@@ -61,7 +62,7 @@ public class BusinessController {
       @RequestParam boolean isCurrentlyOpen) {
 
     businessService.updateOpenStatus(businessId, isCurrentlyOpen);
-    return ResponseEntity.ok("Business is now open.");
+    return ResponseEntity.ok("Business open status is updated.");
   }
 
   // API endpoint for updating business hours
@@ -80,6 +81,14 @@ public class BusinessController {
       @RequestBody @Valid UpdateBasicInfoDto updateBasicInfoDto) {
     businessService.updateBasicInfo(businessId, updateBasicInfoDto);
     return ResponseEntity.ok("Business basic information is updated.");
+  }
+
+  // API endpoint for reading business details
+  @GetMapping("/{businessId}/details")
+  public ResponseEntity<BusinessDetailDto> getBusinessDetails(
+      @PathVariable Long businessId){
+    BusinessDetailDto businessDetailDto = businessService.findBusiness(businessId);
+    return ResponseEntity.ok(businessDetailDto);
   }
 
 }

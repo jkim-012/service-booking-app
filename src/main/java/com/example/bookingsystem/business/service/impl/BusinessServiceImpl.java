@@ -32,50 +32,58 @@ public class BusinessServiceImpl implements BusinessService {
   @Transactional
   public UpdateAddressDto.Response updateAddress(Long businessId, UpdateAddressDto.Request request) {
     // find the business
+    Business business = getBusiness(businessId);
+    // update business address
+    business.changeAddress(request);
+    return UpdateAddressDto.Response.of(business);
+  }
+
+  private Business getBusiness(Long businessId) {
     Business business = businessRepository.findById(businessId)
         .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
-    // update business address
-    business.updateAddress(request);
-    return UpdateAddressDto.Response.of(business);
+    return business;
   }
 
   @Override
   @Transactional
   public void updateActiveStatus(Long businessId, boolean isActive) {
     // find the business
-    Business business = businessRepository.findById(businessId)
-        .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
+    Business business = getBusiness(businessId);
     // update status
-    business.updateActiveStatus(isActive);
+    business.changeActiveStatus(isActive);
   }
 
   @Override
   @Transactional
   public void updateOpenStatus(Long businessId, boolean isCurrentlyOpen) {
     // find the business
-    Business business = businessRepository.findById(businessId)
-        .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
+    Business business = getBusiness(businessId);
     // update status
-    business.updateOpenStatus(isCurrentlyOpen);
+    business.changeOpenStatus(isCurrentlyOpen);
   }
 
   @Override
   @Transactional
   public void updateHours(Long businessId, UpdateHoursDto updateHoursDto) {
     // find the business
-    Business business = businessRepository.findById(businessId)
-        .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
+    Business business = getBusiness(businessId);
     // update hours
-    business.updateHours(updateHoursDto);
+    business.changeHours(updateHoursDto);
   }
 
   @Override
   @Transactional
   public void updateBasicInfo(Long businessId, UpdateBasicInfoDto updateBasicInfoDto) {
     // find the business
-    Business business = businessRepository.findById(businessId)
-        .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
+    Business business = getBusiness(businessId);
     // update basic information
-    business.updateBasicInfo(updateBasicInfoDto);
+    business.changeBasicInfo(updateBasicInfoDto);
+  }
+
+  @Override
+  public BusinessDetailDto findBusiness(Long businessId) {
+    // find the business
+    Business business = getBusiness(businessId);
+    return BusinessDetailDto.of(business);
   }
 }
