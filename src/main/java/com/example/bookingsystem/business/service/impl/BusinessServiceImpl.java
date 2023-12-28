@@ -10,6 +10,8 @@ import com.example.bookingsystem.business.repository.BusinessRepository;
 import com.example.bookingsystem.business.service.BusinessService;
 import com.example.bookingsystem.exception.BusinessNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,8 +84,12 @@ public class BusinessServiceImpl implements BusinessService {
 
   @Override
   public BusinessDetailDto findBusiness(Long businessId) {
-    // find the business
-    Business business = getBusiness(businessId);
-    return BusinessDetailDto.of(business);
+    return BusinessDetailDto.of(getBusiness(businessId));
+  }
+
+  @Override
+  public Page<Business> getAllBusinesses(Pageable pageable) {
+    Page<Business> businesses = businessRepository.findAll(pageable);
+    return businesses;
   }
 }

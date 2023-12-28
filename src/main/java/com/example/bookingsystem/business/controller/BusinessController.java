@@ -1,6 +1,8 @@
 package com.example.bookingsystem.business.controller;
 
+import com.example.bookingsystem.business.domain.Business;
 import com.example.bookingsystem.business.dto.BusinessDetailDto;
+import com.example.bookingsystem.business.dto.BusinessListDto;
 import com.example.bookingsystem.business.dto.NewBusinessDto;
 import com.example.bookingsystem.business.dto.UpdateAddressDto;
 import com.example.bookingsystem.business.dto.UpdateBasicInfoDto;
@@ -8,6 +10,10 @@ import com.example.bookingsystem.business.dto.UpdateHoursDto;
 import com.example.bookingsystem.business.service.BusinessService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -36,12 +42,11 @@ public class BusinessController {
     return ResponseEntity.ok(businessDetailDto);
   }
 
-
   // API endpoint for updating the existed business address info
   @PutMapping("/{businessId}/address")
   public ResponseEntity<UpdateAddressDto.Response> updateAddress(
       @PathVariable Long businessId,
-      @RequestBody @Valid UpdateAddressDto.Request request){
+      @RequestBody @Valid UpdateAddressDto.Request request) {
     UpdateAddressDto.Response response = businessService.updateAddress(businessId, request);
     return ResponseEntity.ok(response);
   }
@@ -69,7 +74,7 @@ public class BusinessController {
   @PutMapping("/{businessId}/hours")
   public ResponseEntity<?> updateBusinessHours(
       @PathVariable Long businessId,
-      @RequestBody @Valid UpdateHoursDto updateHoursDto){
+      @RequestBody @Valid UpdateHoursDto updateHoursDto) {
     businessService.updateHours(businessId, updateHoursDto);
     return ResponseEntity.ok("Business hours are updated.");
   }
@@ -86,9 +91,23 @@ public class BusinessController {
   // API endpoint for reading business details
   @GetMapping("/{businessId}/details")
   public ResponseEntity<BusinessDetailDto> getBusinessDetails(
-      @PathVariable Long businessId){
+      @PathVariable Long businessId) {
     BusinessDetailDto businessDetailDto = businessService.findBusiness(businessId);
     return ResponseEntity.ok(businessDetailDto);
   }
 
+  // API endpoint for reading business list
+  @GetMapping("/list")
+  public ResponseEntity<BusinessListDto> getBusinessList(
+      @RequestParam(name = "page", defaultValue = "0") int page,
+      @RequestParam(name = "size", defaultValue = "10") int size,
+      @RequestParam(name = "sortBy", defaultValue = "name") String SortBy,
+      @RequestParam(name = "sortOrder", defaultValue = "ASC") String sortOrder) {
+
+    Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), SortBy);
+    Pageable pageable = PageRequest.of(page, size, sort);
+    Page<Business> result = businessService.getAllBusinesses(pageable);
+
+    return ResponseEntity.ok(BusinessListDto.of(result));
+  }
 }
