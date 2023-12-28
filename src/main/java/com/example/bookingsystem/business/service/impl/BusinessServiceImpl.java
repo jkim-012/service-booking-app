@@ -4,6 +4,7 @@ import com.example.bookingsystem.business.domain.Business;
 import com.example.bookingsystem.business.dto.BusinessDetailDto;
 import com.example.bookingsystem.business.dto.NewBusinessDto;
 import com.example.bookingsystem.business.dto.UpdateAddressDto;
+import com.example.bookingsystem.business.dto.UpdateHoursDto;
 import com.example.bookingsystem.business.repository.BusinessRepository;
 import com.example.bookingsystem.business.service.BusinessService;
 import com.example.bookingsystem.exception.BusinessNotFoundException;
@@ -20,7 +21,7 @@ public class BusinessServiceImpl implements BusinessService {
   @Override
   public BusinessDetailDto addBusiness(NewBusinessDto newBusinessDto) {
     // create a new business entity
-    Business business = Business.createBusiness(newBusinessDto);
+    Business business = Business.create(newBusinessDto);
     // save
     businessRepository.save(business);
     return BusinessDetailDto.of(business);
@@ -28,21 +29,20 @@ public class BusinessServiceImpl implements BusinessService {
 
   @Override
   @Transactional
-  public UpdateAddressDto.Response updateAddress(Long id, UpdateAddressDto.Request request) {
+  public UpdateAddressDto.Response updateAddress(Long businessId, UpdateAddressDto.Request request) {
     // find the business
-    Business business = businessRepository.findById(id)
+    Business business = businessRepository.findById(businessId)
         .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
-
     // update business address
-    business.updateInfo(request);
+    business.updateAddress(request);
     return UpdateAddressDto.Response.of(business);
   }
 
   @Override
   @Transactional
-  public void updateBusinessStatus(Long id, boolean isActive) {
-    // find the store by id
-    Business business = businessRepository.findById(id)
+  public void updateActiveStatus(Long businessId, boolean isActive) {
+    // find the business
+    Business business = businessRepository.findById(businessId)
         .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
     // update status
     business.updateActiveStatus(isActive);
@@ -50,11 +50,20 @@ public class BusinessServiceImpl implements BusinessService {
 
   @Override
   @Transactional
-  public void openBusinessStatus(Long id, boolean isCurrentlyOpen) {
-    // find the store by id
-    Business business = businessRepository.findById(id)
+  public void updateOpenStatus(Long businessId, boolean isCurrentlyOpen) {
+    // find the business
+    Business business = businessRepository.findById(businessId)
         .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
     // update status
     business.updateOpenStatus(isCurrentlyOpen);
+  }
+
+  @Override
+  public void updateHours(Long businessId, UpdateHoursDto updateHoursDto) {
+    // find the business
+    Business business = businessRepository.findById(businessId)
+        .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
+    // update status
+    business.updateHours(updateHoursDto);
   }
 }

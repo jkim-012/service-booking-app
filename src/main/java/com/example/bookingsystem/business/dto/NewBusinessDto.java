@@ -2,19 +2,21 @@ package com.example.bookingsystem.business.dto;
 
 
 import com.example.bookingsystem.business.domain.Province;
-import java.sql.Time;
+import java.time.LocalTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class NewBusinessDto {
 
   // Required information
@@ -43,8 +45,8 @@ public class NewBusinessDto {
 
   // operation hours
   @NotNull(message = "Open time cannot be null")
-  private Time openTime;
+  private LocalTime openTime;
   @NotNull(message = "Close time cannot be null")
-  private Time closeTime;
+  private LocalTime closeTime;
 
 }

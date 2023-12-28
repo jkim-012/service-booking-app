@@ -2,9 +2,10 @@ package com.example.bookingsystem.business.domain;
 
 import com.example.bookingsystem.business.dto.NewBusinessDto;
 import com.example.bookingsystem.business.dto.UpdateAddressDto;
+import com.example.bookingsystem.business.dto.UpdateHoursDto;
 import com.example.bookingsystem.member.domain.Member;
-import java.sql.Time;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -55,21 +56,24 @@ public class Business {
 
   // operation hours
   @Column(nullable = false)
-  private Time openTime;
+  private LocalTime openTime;
   @Column(nullable = false)
-  private Time closeTime;
+  private LocalTime closeTime;
 
   // current open status
+  @Column
   private boolean isCurrentlyOpen;
   // current business status
+  @Column
   private boolean isActive;
 
   // business create & update - date and time
+  @Column(nullable = false)
   @CreatedDate
   private LocalDateTime createdAt;
+  @Column
   @LastModifiedDate
   private LocalDateTime updatedAt;
-
 
   // mapping
   @ManyToOne
@@ -77,7 +81,7 @@ public class Business {
   private Member member;
 
   // create business
-  public static Business createBusiness(NewBusinessDto newBusinessDto) {
+  public static Business create(NewBusinessDto newBusinessDto) {
     return Business.builder()
         .name(newBusinessDto.getName())
         .description(newBusinessDto.getDescription())
@@ -92,7 +96,7 @@ public class Business {
   }
 
   // update business address information
-  public void updateInfo(UpdateAddressDto.Request request) {
+  public void updateAddress(UpdateAddressDto.Request request) {
     if (request.getProvince() != null) {
       this.province = request.getProvince();
     }
@@ -111,7 +115,14 @@ public class Business {
   public void updateActiveStatus(boolean isActive) {
     this.isActive = isActive;
   }
+
+  // update open status
   public void updateOpenStatus(boolean isCurrentlyOpen) {
     this.isCurrentlyOpen = isCurrentlyOpen;
+  }
+
+  public void updateHours(UpdateHoursDto updateHoursDto) {
+    this.openTime = updateHoursDto.getOpenTime();
+    this.closeTime = updateHoursDto.getCloseTime();
   }
 }

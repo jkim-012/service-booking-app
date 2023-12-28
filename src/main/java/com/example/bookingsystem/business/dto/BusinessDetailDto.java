@@ -3,25 +3,19 @@ package com.example.bookingsystem.business.dto;
 import com.example.bookingsystem.business.domain.Business;
 import com.example.bookingsystem.business.domain.Province;
 import com.example.bookingsystem.member.domain.Member;
-import java.sql.Time;
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class BusinessDetailDto {
 
   private Long id;
@@ -36,8 +30,8 @@ public class BusinessDetailDto {
   private String postalCode;
 
   // operation hours
-  private Time openTime;
-  private Time closeTime;
+  private LocalTime openTime;
+  private LocalTime closeTime;
 
   // current open status
   private boolean isCurrentlyOpen;
