@@ -4,6 +4,7 @@ import com.example.bookingsystem.business.domain.Business;
 import com.example.bookingsystem.business.dto.BusinessDetailDto;
 import com.example.bookingsystem.business.dto.NewBusinessDto;
 import com.example.bookingsystem.business.dto.UpdateAddressDto;
+import com.example.bookingsystem.business.dto.UpdateBasicInfoDto;
 import com.example.bookingsystem.business.dto.UpdateHoursDto;
 import com.example.bookingsystem.business.repository.BusinessRepository;
 import com.example.bookingsystem.business.service.BusinessService;
@@ -59,11 +60,22 @@ public class BusinessServiceImpl implements BusinessService {
   }
 
   @Override
+  @Transactional
   public void updateHours(Long businessId, UpdateHoursDto updateHoursDto) {
     // find the business
     Business business = businessRepository.findById(businessId)
         .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
-    // update status
+    // update hours
     business.updateHours(updateHoursDto);
+  }
+
+  @Override
+  @Transactional
+  public void updateBasicInfo(Long businessId, UpdateBasicInfoDto updateBasicInfoDto) {
+    // find the business
+    Business business = businessRepository.findById(businessId)
+        .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
+    // update basic information
+    business.updateBasicInfo(updateBasicInfoDto);
   }
 }

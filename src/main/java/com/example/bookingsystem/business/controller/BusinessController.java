@@ -3,6 +3,7 @@ package com.example.bookingsystem.business.controller;
 import com.example.bookingsystem.business.dto.BusinessDetailDto;
 import com.example.bookingsystem.business.dto.NewBusinessDto;
 import com.example.bookingsystem.business.dto.UpdateAddressDto;
+import com.example.bookingsystem.business.dto.UpdateBasicInfoDto;
 import com.example.bookingsystem.business.dto.UpdateHoursDto;
 import com.example.bookingsystem.business.service.BusinessService;
 import javax.validation.Valid;
@@ -70,6 +71,15 @@ public class BusinessController {
       @RequestBody @Valid UpdateHoursDto updateHoursDto){
     businessService.updateHours(businessId, updateHoursDto);
     return ResponseEntity.ok("Business hours are updated.");
+  }
+
+  // API endpoint for updating basic information (name, description, phone)
+  @PutMapping("/{businessId}/basic-info")
+  public ResponseEntity<?> updateBasicInfo(
+      @PathVariable Long businessId,
+      @RequestBody @Valid UpdateBasicInfoDto updateBasicInfoDto) {
+    businessService.updateBasicInfo(businessId, updateBasicInfoDto);
+    return ResponseEntity.ok("Business basic information is updated.");
   }
 
 }

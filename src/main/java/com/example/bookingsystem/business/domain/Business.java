@@ -2,6 +2,7 @@ package com.example.bookingsystem.business.domain;
 
 import com.example.bookingsystem.business.dto.NewBusinessDto;
 import com.example.bookingsystem.business.dto.UpdateAddressDto;
+import com.example.bookingsystem.business.dto.UpdateBasicInfoDto;
 import com.example.bookingsystem.business.dto.UpdateHoursDto;
 import com.example.bookingsystem.member.domain.Member;
 import java.time.LocalDateTime;
@@ -124,5 +125,17 @@ public class Business {
   public void updateHours(UpdateHoursDto updateHoursDto) {
     this.openTime = updateHoursDto.getOpenTime();
     this.closeTime = updateHoursDto.getCloseTime();
+  }
+
+  public void updateBasicInfo(UpdateBasicInfoDto updateBasicInfoDto) {
+    if (updateBasicInfoDto.getName() != null){
+      this.name = updateBasicInfoDto.getName();
+    }
+    if (updateBasicInfoDto.getDescription() != null){
+      this.description = updateBasicInfoDto.getDescription();
+    }
+    if (updateBasicInfoDto.getPhone() != null){
+      this.description = updateBasicInfoDto.getDescription();
+    }
   }
 }
