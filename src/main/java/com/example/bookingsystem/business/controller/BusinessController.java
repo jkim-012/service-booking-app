@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,7 +58,7 @@ public class BusinessController {
       @PathVariable Long businessId,
       @RequestParam boolean isActive) {
     businessService.updateActiveStatus(businessId, isActive);
-    return ResponseEntity.ok("Business active status is updated.");
+    return ResponseEntity.ok("The business active status is updated.");
   }
 
   // API endpoint for updating business open status
@@ -67,7 +68,7 @@ public class BusinessController {
       @RequestParam boolean isCurrentlyOpen) {
 
     businessService.updateOpenStatus(businessId, isCurrentlyOpen);
-    return ResponseEntity.ok("Business open status is updated.");
+    return ResponseEntity.ok("The business open status is updated.");
   }
 
   // API endpoint for updating business hours
@@ -76,7 +77,7 @@ public class BusinessController {
       @PathVariable Long businessId,
       @RequestBody @Valid UpdateHoursDto updateHoursDto) {
     businessService.updateHours(businessId, updateHoursDto);
-    return ResponseEntity.ok("Business hours are updated.");
+    return ResponseEntity.ok("The business hours are updated.");
   }
 
   // API endpoint for updating basic information (name, description, phone)
@@ -85,7 +86,7 @@ public class BusinessController {
       @PathVariable Long businessId,
       @RequestBody @Valid UpdateBasicInfoDto updateBasicInfoDto) {
     businessService.updateBasicInfo(businessId, updateBasicInfoDto);
-    return ResponseEntity.ok("Business basic information is updated.");
+    return ResponseEntity.ok("The business basic information is updated.");
   }
 
   // API endpoint for reading business details
@@ -98,7 +99,7 @@ public class BusinessController {
 
   // API endpoint for reading business list
   @GetMapping("/list")
-  public ResponseEntity<BusinessListDto> getBusinessList(
+  public ResponseEntity<BusinessListDto> getAllBusinesses(
       @RequestParam(name = "page", defaultValue = "0") int page,
       @RequestParam(name = "size", defaultValue = "10") int size,
       @RequestParam(name = "sortBy", defaultValue = "name") String SortBy,
@@ -109,5 +110,13 @@ public class BusinessController {
     Page<Business> result = businessService.getAllBusinesses(pageable);
 
     return ResponseEntity.ok(BusinessListDto.of(result));
+  }
+
+  // API endpoint for deleting business
+  @DeleteMapping("/{businessId}")
+  public ResponseEntity<?> deleteBusiness(
+      @PathVariable Long businessId) {
+    businessService.deleteBusiness(businessId);
+    return ResponseEntity.ok("The business now is deleted.");
   }
 }

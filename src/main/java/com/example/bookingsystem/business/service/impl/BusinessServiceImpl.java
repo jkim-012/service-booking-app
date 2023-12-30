@@ -92,4 +92,12 @@ public class BusinessServiceImpl implements BusinessService {
     Page<Business> businesses = businessRepository.findAll(pageable);
     return businesses;
   }
+
+  @Override
+  public void deleteBusiness(Long businessId) {
+    // find the business
+    Business business = getBusiness(businessId);
+    // delete the business
+    businessRepository.delete(business);
+  }
 }

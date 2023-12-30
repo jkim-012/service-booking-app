@@ -20,4 +20,6 @@ public interface BusinessService {
   void updateBasicInfo(Long businessId, UpdateBasicInfoDto updateBasicInfoDto);
   BusinessDetailDto findBusiness(Long businessId);
   Page<Business> getAllBusinesses(Pageable pageable);
+  void deleteBusiness(Long businessId);
+
 }
