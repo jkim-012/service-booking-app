@@ -1,9 +1,11 @@
 package com.example.bookingsystem.member.controller;
 
+import com.example.bookingsystem.member.dto.LoginDto;
 import com.example.bookingsystem.member.dto.NewMemberDto;
 import com.example.bookingsystem.member.service.MemberService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +25,19 @@ public class MemberController {
 
     memberService.register(newMemberDto);
     return ResponseEntity.ok("Registration successfully completed.");
+  }
+
+  // 로그인 API
+  @PostMapping("/login")
+  public ResponseEntity<?> login(@RequestBody @Valid LoginDto loginDto) {
+
+    boolean loginSuccess = memberService.login(loginDto);
+
+    if (loginSuccess) {
+      return ResponseEntity.ok("Logged in successfully!");
+    } else {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed. Please check credentials");
+    }
   }
 
 }

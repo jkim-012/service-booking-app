@@ -2,10 +2,18 @@ package com.example.bookingsystem.member.service.impl;
 
 import com.example.bookingsystem.exception.EmailAlreadyExistException;
 import com.example.bookingsystem.member.domain.Member;
+import com.example.bookingsystem.member.dto.LoginDto;
 import com.example.bookingsystem.member.dto.NewMemberDto;
 import com.example.bookingsystem.member.repository.MemberRepository;
 import com.example.bookingsystem.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +23,8 @@ public class MemberServiceImpl implements MemberService {
 
   private final MemberRepository memberRepository;
   private final PasswordEncoder passwordEncoder;
+  private final AuthenticationManager authenticationManager;
+  private final UserDetailsService userDetailsService;
 
   @Override
   public void register(NewMemberDto newMemberDto) {
@@ -43,4 +53,23 @@ public class MemberServiceImpl implements MemberService {
     // save
     memberRepository.save(member);
   }
+
+  @Override
+  public boolean login(LoginDto loginDto) {
+
+    UserDetails userDetails = userDetailsService.loadUserByUsername(loginDto.getEmail());
+
+    try {
+      authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
+
+      SecurityContextHolder.getContext().setAuthentication(
+          new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()));
+
+      return true;
+    } catch (AuthenticationException e) {
+      return false;
+    }
+  }
+
 }

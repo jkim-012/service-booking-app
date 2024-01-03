@@ -5,8 +5,11 @@ import com.example.bookingsystem.business.dto.UpdateAddressDto;
 import com.example.bookingsystem.business.dto.UpdateBasicInfoDto;
 import com.example.bookingsystem.business.dto.UpdateHoursDto;
 import com.example.bookingsystem.member.domain.Member;
+import com.example.bookingsystem.service.domain.ServiceItem;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -17,6 +20,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -80,6 +84,10 @@ public class Business {
   @ManyToOne
   @JoinColumn(name = "member_id")
   private Member member;
+
+  @OneToMany(mappedBy = "business")
+  private List<ServiceItem> serviceItemList;
+
 
   // create business
   public static Business create(NewBusinessDto newBusinessDto) {
