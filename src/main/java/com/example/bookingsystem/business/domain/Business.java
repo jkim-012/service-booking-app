@@ -1,5 +1,6 @@
 package com.example.bookingsystem.business.domain;
 
+import com.example.bookingsystem.booking.domain.Booking;
 import com.example.bookingsystem.business.dto.NewBusinessDto;
 import com.example.bookingsystem.business.dto.UpdateAddressDto;
 import com.example.bookingsystem.business.dto.UpdateBasicInfoDto;
@@ -20,6 +21,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.example.bookingsystem.service.domain.ServiceItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,8 +45,10 @@ public class Business {
 
   @Column(nullable = false)
   private String name;
+
   @Column(nullable = false)
   private String description;
+
   @Column(nullable = false)
   private String phone;
 
@@ -51,16 +56,20 @@ public class Business {
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private Province province;
+
   @Column(nullable = false)
   private String city;
+
   @Column(nullable = false)
   private String streetAddress;
+
   @Column(nullable = false)
   private String postalCode;
 
   // operation hours
   @Column(nullable = false)
   private LocalTime openTime;
+
   @Column(nullable = false)
   private LocalTime closeTime;
 
@@ -75,6 +84,7 @@ public class Business {
   @Column(nullable = false)
   @CreatedDate
   private LocalDateTime createdAt;
+
   @Column
   @LastModifiedDate
   private LocalDateTime updatedAt;
@@ -85,7 +95,10 @@ public class Business {
   private Member member;
 
   @OneToMany(mappedBy = "business")
-  private List<com.example.bookingsystem.service.domain.ServiceItem> serviceItemList;
+  private List<ServiceItem> serviceItemList;
+
+  @OneToMany(mappedBy = "business")
+  private List<Booking> bookingList;
 
 
   // create business

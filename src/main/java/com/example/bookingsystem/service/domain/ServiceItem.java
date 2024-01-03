@@ -1,19 +1,16 @@
 package com.example.bookingsystem.service.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+import com.example.bookingsystem.booking.domain.Booking;
 import com.example.bookingsystem.business.domain.Business;
 import com.example.bookingsystem.service.dto.UpdateServiceItemDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -41,6 +38,9 @@ public class ServiceItem {
   @ManyToOne
   @JoinColumn(name = "business_id")
   private Business business;
+
+  @OneToMany(mappedBy = "serviceItem")
+  private List<Booking> bookingList;
 
 
   // update service information

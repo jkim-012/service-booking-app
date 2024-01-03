@@ -1,6 +1,5 @@
 package com.example.bookingsystem.service.dto;
 
-import com.example.bookingsystem.business.domain.Business;
 import com.example.bookingsystem.business.dto.BusinessDetailDto;
 import com.example.bookingsystem.service.domain.ServiceItem;
 import lombok.*;
@@ -17,7 +16,7 @@ public class ServiceItemDetailDto{
     private String description;
     private Double price;
     private Integer duration;
-    private BusinessDetailDto businessDetailDto;
+    private BusinessDetailDto businessDetail;
 
     // ServiceItem entity -> ServiceItemDetailDto
     public static ServiceItemDetailDto of(ServiceItem serviceItem) {
@@ -26,7 +25,7 @@ public class ServiceItemDetailDto{
                 .name(serviceItem.getName())
                 .description(serviceItem.getDescription())
                 .price(serviceItem.getPrice())
-                .businessDetailDto(BusinessDetailDto.of(serviceItem.getBusiness()))
+                .businessDetail(BusinessDetailDto.of(serviceItem.getBusiness()))
                 .build();
     }
 }
