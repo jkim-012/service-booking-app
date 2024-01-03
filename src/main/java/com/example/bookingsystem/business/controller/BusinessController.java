@@ -48,6 +48,7 @@ public class BusinessController {
   public ResponseEntity<UpdateAddressDto.Response> updateAddress(
       @PathVariable Long businessId,
       @RequestBody @Valid UpdateAddressDto.Request request) {
+
     UpdateAddressDto.Response response = businessService.updateAddress(businessId, request);
     return ResponseEntity.ok(response);
   }
@@ -57,6 +58,7 @@ public class BusinessController {
   public ResponseEntity<?> updateBusinessActiveStatus(
       @PathVariable Long businessId,
       @RequestParam boolean isActive) {
+
     businessService.updateActiveStatus(businessId, isActive);
     return ResponseEntity.ok("The business active status is updated.");
   }
@@ -76,6 +78,7 @@ public class BusinessController {
   public ResponseEntity<?> updateBusinessHours(
       @PathVariable Long businessId,
       @RequestBody @Valid UpdateHoursDto updateHoursDto) {
+
     businessService.updateHours(businessId, updateHoursDto);
     return ResponseEntity.ok("The business hours are updated.");
   }
@@ -85,6 +88,7 @@ public class BusinessController {
   public ResponseEntity<?> updateBasicInfo(
       @PathVariable Long businessId,
       @RequestBody @Valid UpdateBasicInfoDto updateBasicInfoDto) {
+
     businessService.updateBasicInfo(businessId, updateBasicInfoDto);
     return ResponseEntity.ok("The business basic information is updated.");
   }
@@ -93,6 +97,7 @@ public class BusinessController {
   @GetMapping("/{businessId}/details")
   public ResponseEntity<BusinessDetailDto> getBusinessDetails(
       @PathVariable Long businessId) {
+
     BusinessDetailDto businessDetailDto = businessService.findBusiness(businessId);
     return ResponseEntity.ok(businessDetailDto);
   }
@@ -116,7 +121,8 @@ public class BusinessController {
   @DeleteMapping("/{businessId}")
   public ResponseEntity<?> deleteBusiness(
       @PathVariable Long businessId) {
+
     businessService.deleteBusiness(businessId);
-    return ResponseEntity.ok("The business now is deleted.");
+    return ResponseEntity.ok("The business is now deleted.");
   }
 }

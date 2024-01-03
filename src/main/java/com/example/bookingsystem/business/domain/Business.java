@@ -5,10 +5,9 @@ import com.example.bookingsystem.business.dto.UpdateAddressDto;
 import com.example.bookingsystem.business.dto.UpdateBasicInfoDto;
 import com.example.bookingsystem.business.dto.UpdateHoursDto;
 import com.example.bookingsystem.member.domain.Member;
-import com.example.bookingsystem.service.domain.ServiceItem;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -86,7 +85,7 @@ public class Business {
   private Member member;
 
   @OneToMany(mappedBy = "business")
-  private List<ServiceItem> serviceItemList;
+  private List<com.example.bookingsystem.service.domain.ServiceItem> serviceItemList;
 
 
   // create business

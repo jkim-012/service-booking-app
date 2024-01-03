@@ -2,6 +2,8 @@ package com.example.bookingsystem.business.dto;
 
 import com.example.bookingsystem.business.domain.Business;
 import java.util.List;
+
+import com.example.bookingsystem.global.PageInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +28,7 @@ public class BusinessListDto {
         .page(result.getNumber())
         .size(result.getSize())
         .totalPage(result.getTotalPages())
-        .totalBusinesses(result.getTotalElements())
+        .totalElements(result.getTotalElements())
         .build();
 
     return BusinessListDto.builder()

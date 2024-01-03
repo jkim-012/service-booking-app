@@ -1,6 +1,5 @@
 package com.example.bookingsystem.business.dto;
 
-import com.example.bookingsystem.business.domain.Business;
 import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

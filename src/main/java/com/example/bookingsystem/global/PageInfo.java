@@ -1,4 +1,4 @@
-package com.example.bookingsystem.business.dto;
+package com.example.bookingsystem.global;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +16,6 @@ public class PageInfo {
   private int page;
   private int size;
   private int totalPage;
-  private long totalBusinesses;
+  private long totalElements;
 
 }

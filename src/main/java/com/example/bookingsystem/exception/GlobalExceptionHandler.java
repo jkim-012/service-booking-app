@@ -22,4 +22,9 @@ public class GlobalExceptionHandler {
   public ResponseEntity<String> handleNotBusinessOwnerException(NotBusinessOwnerException e){
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
   }
+
+  @ExceptionHandler
+  public ResponseEntity<String> handleServiceItemNotFoundException(ServiceItemNotFoundException e){
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+  }
 }

@@ -4,10 +4,8 @@ import com.example.bookingsystem.business.domain.Business;
 import com.example.bookingsystem.business.dto.BusinessDetailDto;
 import com.example.bookingsystem.business.dto.NewBusinessDto;
 import com.example.bookingsystem.business.dto.UpdateAddressDto;
-import com.example.bookingsystem.business.dto.UpdateAddressDto.Request;
 import com.example.bookingsystem.business.dto.UpdateBasicInfoDto;
 import com.example.bookingsystem.business.dto.UpdateHoursDto;
-import com.example.bookingsystem.member.domain.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
