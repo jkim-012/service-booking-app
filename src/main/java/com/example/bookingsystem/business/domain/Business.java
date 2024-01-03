@@ -75,10 +75,10 @@ public class Business {
 
   // current open status
   @Column
-  private boolean isCurrentlyOpen;
+  private Boolean isCurrentlyOpen;
   // current business status
   @Column
-  private boolean isActive;
+  private Boolean isActive;
 
   // business create & update - date and time
   @Column(nullable = false)
