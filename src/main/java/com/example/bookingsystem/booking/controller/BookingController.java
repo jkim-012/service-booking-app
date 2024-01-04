@@ -46,5 +46,14 @@ public class BookingController {
         return ResponseEntity.ok(bookingDetailDto);
     }
 
+    // API endpoint for reading booking details
+    @GetMapping("/booking/{bookingId}")
+    public ResponseEntity<BookingDetailDto> getBookingDetails(
+            @PathVariable Long bookingId){
+        BookingDetailDto bookingDetailDto = bookingService.getBookingDetails(bookingId);
+        return ResponseEntity.ok(bookingDetailDto);
+    }
+
+
 
 }

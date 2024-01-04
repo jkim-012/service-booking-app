@@ -100,6 +100,22 @@ public class BookingServiceImpl implements BookingService {
         return BookingDetailDto.of(booking);
     }
 
+    @Override
+    public BookingDetailDto getBookingDetails(Long bookingId) {
+        // get logged in member
+        Member member = getLoggedInMember();
+
+        // find the booking
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new BookingNotFoundException("Booking not found with ID: " + bookingId));
+
+        // check the member's authority
+        if (!member.equals(booking.getBusiness().getMember()) && !member.equals(booking.getMember())) {
+            throw new UnauthorizedUserException("Unauthorized: You do not have permission to read the booking details.");
+        }
+        return BookingDetailDto.of(booking);
+    }
+
     private Member getLoggedInMember() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
