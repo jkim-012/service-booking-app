@@ -4,11 +4,10 @@ import com.example.bookingsystem.booking.domain.Booking;
 import com.example.bookingsystem.booking.domain.BookingStatus;
 import com.example.bookingsystem.booking.dto.BookingDetailDto;
 import com.example.bookingsystem.booking.dto.NewBookingDto;
+import com.example.bookingsystem.booking.dto.UpdateBookingDto;
 import com.example.bookingsystem.booking.repository.BookingRepository;
 import com.example.bookingsystem.booking.service.BookingService;
-import com.example.bookingsystem.exception.BookingNotAvailableException;
-import com.example.bookingsystem.exception.NotCustomerException;
-import com.example.bookingsystem.exception.ServiceItemNotFoundException;
+import com.example.bookingsystem.exception.*;
 import com.example.bookingsystem.member.domain.Member;
 import com.example.bookingsystem.member.domain.Role;
 import com.example.bookingsystem.member.repository.MemberRepository;
@@ -44,7 +43,7 @@ public class BookingServiceImpl implements BookingService {
 
         // check if booking is available
         Optional<Booking> byScheduledAt = bookingRepository.findByScheduledAt(newBookingDto.getScheduledAt());
-        if (byScheduledAt.isPresent()){
+        if (byScheduledAt.isPresent()) {
             throw new BookingNotAvailableException("The specified time slot is already booked.");
         }
         // book an appointment
@@ -55,8 +54,49 @@ public class BookingServiceImpl implements BookingService {
                 .status(BookingStatus.BOOKED)
                 .serviceItem(serviceItem)
                 .business(serviceItem.getBusiness())
+                .member(member)
                 .build();
 
+        return BookingDetailDto.of(booking);
+    }
+
+    @Override
+    public BookingDetailDto updateBooking(Long bookingId, UpdateBookingDto updateBookingDto) {
+
+        // get logged in member
+        Member member = getLoggedInMember();
+
+        // find the booking to be updated
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new BookingNotFoundException("Booking not found with ID: " + bookingId));
+
+        // check the member's authority
+        if (!member.equals(booking.getMember())) {
+            throw new UnauthorizedUserException("Unauthorized: You do not have permission to update the booking");
+        }
+        // update
+        booking.changeBookingInfo(updateBookingDto);
+        return BookingDetailDto.of(booking);
+    }
+
+    @Override
+    public BookingDetailDto updateBookingStatus(Long bookingId, BookingStatus newStatus) {
+
+        // get logged in member
+        Member member = getLoggedInMember();
+
+        // find the booking to be updated
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new BookingNotFoundException("Booking not found with ID: " + bookingId));
+
+        // check the member's authority
+        if (!member.equals(booking.getBusiness().getMember()) && !member.equals(booking.getMember())) {
+            throw new UnauthorizedUserException("Unauthorized: You do not have permission to update the booking status.");
+        }
+        // change status (cancel by customer/ cancel by business / complete)
+        if (booking.getStatus().equals(BookingStatus.BOOKED)) {
+            booking.changeStatus(newStatus);
+        }
         return BookingDetailDto.of(booking);
     }
 
@@ -70,7 +110,7 @@ public class BookingServiceImpl implements BookingService {
 
     private ServiceItem getServiceItemById(Long serviceId) {
         ServiceItem serviceItem = serviceItemRepository.findById(serviceId)
-                .orElseThrow(()-> new ServiceItemNotFoundException("Service not found with ID: " + serviceId));
+                .orElseThrow(() -> new ServiceItemNotFoundException("Service not found with ID: " + serviceId));
         return serviceItem;
     }
 
