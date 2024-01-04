@@ -34,9 +34,9 @@ public class BusinessDetailDto {
   private LocalTime closeTime;
 
   // current open status
-  private boolean isCurrentlyOpen;
+  private Boolean isCurrentlyOpen;
   // current business status
-  private boolean isActive;
+  private Boolean isActive;
 
   // store create & update - date and time
   private LocalDateTime createdAt;
@@ -58,8 +58,8 @@ public class BusinessDetailDto {
         .postalCode(business.getPostalCode())
         .openTime(business.getOpenTime())
         .closeTime(business.getCloseTime())
-        .isCurrentlyOpen(business.isCurrentlyOpen())
-        .isActive(business.isActive())
+        .isCurrentlyOpen(business.getIsCurrentlyOpen())
+        .isActive(business.getIsActive())
         .createdAt(business.getCreatedAt())
         .updatedAt(business.getUpdatedAt())
         .member(business.getMember())

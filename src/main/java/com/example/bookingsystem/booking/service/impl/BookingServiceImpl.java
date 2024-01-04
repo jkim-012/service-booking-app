@@ -14,6 +14,8 @@ import com.example.bookingsystem.member.repository.MemberRepository;
 import com.example.bookingsystem.service.domain.ServiceItem;
 import com.example.bookingsystem.service.repository.ServiceItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -61,7 +63,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDetailDto updateBooking(Long bookingId, UpdateBookingDto updateBookingDto) {
+    public BookingDetailDto updateBookingDetails(Long bookingId, UpdateBookingDto updateBookingDto) {
 
         // get logged in member
         Member member = getLoggedInMember();
@@ -114,6 +116,11 @@ public class BookingServiceImpl implements BookingService {
             throw new UnauthorizedUserException("Unauthorized: You do not have permission to read the booking details.");
         }
         return BookingDetailDto.of(booking);
+    }
+
+    @Override
+    public Page<Booking> getAllBookingByBusiness(Long businessId, Pageable pageable) {
+        return null;
     }
 
     private Member getLoggedInMember() {
