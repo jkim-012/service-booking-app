@@ -20,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -59,10 +60,13 @@ public class BookingServiceImpl implements BookingService {
                 .member(member)
                 .build();
 
+        bookingRepository.save(booking);
+
         return BookingDetailDto.of(booking);
     }
 
     @Override
+    @Transactional
     public BookingDetailDto updateBookingDetails(Long bookingId, UpdateBookingDto updateBookingDto) {
 
         // get logged in member
@@ -82,11 +86,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional
     public BookingDetailDto updateBookingStatus(Long bookingId, BookingStatus newStatus) {
 
         // get logged in member
         Member member = getLoggedInMember();
-
         // find the booking to be updated
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException("Booking not found with ID: " + bookingId));
@@ -96,9 +100,10 @@ public class BookingServiceImpl implements BookingService {
             throw new UnauthorizedUserException("Unauthorized: You do not have permission to update the booking status.");
         }
         // change status (cancel by customer/ cancel by business / complete)
-        if (booking.getStatus().equals(BookingStatus.BOOKED)) {
-            booking.changeStatus(newStatus);
+        if (!booking.getStatus().equals(BookingStatus.BOOKED)) {
+            throw new UnauthorizedUserException("Unauthorized: You can't change the status.: " + booking.getStatus());
         }
+        booking.changeStatus(newStatus);
         return BookingDetailDto.of(booking);
     }
 
@@ -106,7 +111,6 @@ public class BookingServiceImpl implements BookingService {
     public BookingDetailDto getBookingDetails(Long bookingId) {
         // get logged in member
         Member member = getLoggedInMember();
-
         // find the booking
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException("Booking not found with ID: " + bookingId));

@@ -16,7 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/booking")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
 public class BookingController {
@@ -24,7 +24,7 @@ public class BookingController {
     private final BookingService bookingService;
 
     // API endpoint for booking an appointment
-    @PostMapping("/service/{serviceId}")
+    @PostMapping("/booking/service/{serviceId}")
     public ResponseEntity<BookingDetailDto> createBooking(
             @PathVariable Long serviceId,
             @RequestBody NewBookingDto newBookingDto){
@@ -64,7 +64,7 @@ public class BookingController {
     }
 
     // API endpoint for reading booking list for a business
-    @GetMapping("/booking/list/{businessId}")
+    @GetMapping("/business/{businessId}/booking/list")
     public ResponseEntity<BookingListDto> getBookingListByBusiness(
             @PathVariable Long businessId,
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -77,7 +77,5 @@ public class BookingController {
         Page<Booking> result = bookingService.getAllBookingByBusiness(businessId, pageable);
         return ResponseEntity.ok(BookingListDto.of(result));
     }
-
-
 
 }
