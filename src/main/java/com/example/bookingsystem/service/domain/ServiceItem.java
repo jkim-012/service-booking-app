@@ -23,15 +23,13 @@ public class ServiceItem {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  // service basic info - name, desc, price, duration
   @Column(nullable = false)
   private String name;
-
   @Column(nullable = false)
   private String description;
-
   @Column(nullable = false)
   private Double price;
-
   @Column
   private Integer duration;
 
@@ -43,7 +41,7 @@ public class ServiceItem {
   private List<Booking> bookingList;
 
 
-  // update service information
+  // update service information (name, description, price, duration)
   public void changeServiceInfo(UpdateServiceItemDto updateServiceItemDto) {
     if (updateServiceItemDto.getName() != null){
       this.name = updateServiceItemDto.getName();

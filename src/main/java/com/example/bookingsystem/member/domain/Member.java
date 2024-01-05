@@ -4,13 +4,7 @@ import com.example.bookingsystem.booking.domain.Booking;
 import com.example.bookingsystem.business.domain.Business;
 import java.time.LocalDate;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -29,26 +23,26 @@ public class Member {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank
+  @Column(nullable = false)
   private String email; // login username
-  @NotBlank
+  @Column(nullable = false)
   private String password;
 
-  @NotBlank
+  @Column(nullable = false)
   private String firstName;
-  @NotBlank
+  @Column(nullable = false)
   private String lastName;
-  @NotBlank
+  @Column(nullable = false)
   private String displayName;
 
-  @NotNull
+  @Column(nullable = false)
   private LocalDate dateOfBirth;
 
-  @NotNull
+  @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private Role role;
 
-  @NotNull
+  @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private SEX sex;
 

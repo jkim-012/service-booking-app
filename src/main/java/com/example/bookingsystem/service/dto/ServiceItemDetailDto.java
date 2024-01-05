@@ -24,6 +24,7 @@ public class ServiceItemDetailDto{
                 .ServiceItemId(serviceItem.getId())
                 .name(serviceItem.getName())
                 .description(serviceItem.getDescription())
+                .duration(serviceItem.getDuration())
                 .price(serviceItem.getPrice())
                 .businessDetail(BusinessDetailDto.of(serviceItem.getBusiness()))
                 .build();

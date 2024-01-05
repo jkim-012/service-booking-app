@@ -10,9 +10,14 @@ import com.example.bookingsystem.business.dto.UpdateHoursDto;
 import com.example.bookingsystem.business.repository.BusinessRepository;
 import com.example.bookingsystem.business.service.BusinessService;
 import com.example.bookingsystem.exception.BusinessNotFoundException;
+import com.example.bookingsystem.member.domain.Member;
+import com.example.bookingsystem.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +26,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class BusinessServiceImpl implements BusinessService {
 
   private final BusinessRepository businessRepository;
+  private final MemberRepository memberRepository;
 
   @Override
   public BusinessDetailDto addBusiness(NewBusinessDto newBusinessDto) {
+    // get a logged in member
+    Member member = getLoggedInMember();
     // create a new business entity
-    Business business = Business.create(newBusinessDto);
+    Business business = Business.create(newBusinessDto, member);
     // save
     businessRepository.save(business);
     return BusinessDetailDto.of(business);
@@ -99,7 +107,15 @@ public class BusinessServiceImpl implements BusinessService {
 
   private Business getBusiness(Long businessId) {
     Business business = businessRepository.findById(businessId)
-        .orElseThrow(()-> new BusinessNotFoundException("Business doesn't exist."));
+        .orElseThrow(()-> new BusinessNotFoundException("Business not found with ID: " + businessId));
     return business;
+  }
+
+  private Member getLoggedInMember() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String email = authentication.getName();
+    Member member = memberRepository.findByEmail(email)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+    return member;
   }
 }

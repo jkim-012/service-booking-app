@@ -46,6 +46,7 @@ public class ServiceItemServiceImpl implements ServiceItemService {
 
         // create service
         ServiceItem serviceItem =ServiceItem.builder()
+                .name(newServiceDto.getName())
                 .price((newServiceDto.getPrice()))
                 .duration(newServiceDto.getDuration())
                 .description(newServiceDto.getDescription())

@@ -2,9 +2,11 @@ package com.example.bookingsystem.business.dto;
 
 import com.example.bookingsystem.business.domain.Business;
 import com.example.bookingsystem.business.domain.Province;
-import com.example.bookingsystem.member.domain.Member;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import com.example.bookingsystem.member.dto.MemberDetailDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,9 +44,6 @@ public class BusinessDetailDto {
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
-  // Business owner
-  private Member member;
-
   // Business entity -> BusinessDetailDto
   public static BusinessDetailDto of(Business business) {
     return BusinessDetailDto.builder()
@@ -62,7 +61,6 @@ public class BusinessDetailDto {
         .isActive(business.getIsActive())
         .createdAt(business.getCreatedAt())
         .updatedAt(business.getUpdatedAt())
-        .member(business.getMember())
         .build();
   }
 }

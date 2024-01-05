@@ -2,15 +2,14 @@ package com.example.bookingsystem.member.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
+import lombok.*;
+
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class LoginDto {
 
   @Email(message = "이메일을 형식에 맞게 입력해 주세요.")

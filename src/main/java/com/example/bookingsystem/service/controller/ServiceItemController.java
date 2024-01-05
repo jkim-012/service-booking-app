@@ -32,7 +32,7 @@ public class ServiceItemController {
     }
 
 
-    // API endpoint for updating service information
+    // API endpoint for updating service basic information
     @PutMapping("/business/service/{serviceId}")
     public ResponseEntity<ServiceItemDetailDto> updateService(
             @PathVariable Long serviceId,
@@ -42,7 +42,7 @@ public class ServiceItemController {
         return ResponseEntity.ok(serviceItemDetailDto);
     }
 
-    // API endpoint for deleting service information
+    // API endpoint for deleting service
     @DeleteMapping("/business/service/{serviceId}")
     public ResponseEntity<?> deleteService(
             @PathVariable Long serviceId) {
@@ -60,7 +60,7 @@ public class ServiceItemController {
         return ResponseEntity.ok(serviceItemDetailDto);
     }
 
-    // API endpoint for reading all services list
+    // API endpoint for reading all services
     @GetMapping("/service/list")
     public ResponseEntity<ServiceItemListDto> getAllServices(
             @RequestParam(name = "page", defaultValue = "0") int page,

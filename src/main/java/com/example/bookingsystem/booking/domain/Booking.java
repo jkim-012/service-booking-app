@@ -69,6 +69,7 @@ public class Booking {
         }
     }
 
+    // change booking status (cancel or complete)
     public void changeStatus(BookingStatus newStatus) {
         this.status = newStatus;
     }
