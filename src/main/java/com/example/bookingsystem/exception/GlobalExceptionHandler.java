@@ -42,9 +42,13 @@ public class GlobalExceptionHandler {
   public ResponseEntity<String> handleBookingNotFoundException(BookingNotFoundException e){
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
   }
-
   @ExceptionHandler(UnauthorizedUserException.class)
   public ResponseEntity<String> handleUnauthorizedUserException(UnauthorizedUserException e){
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+  }
+
+  @ExceptionHandler(ReviewAlreadyExistException.class)
+  public ResponseEntity<String> handleUnauthorizedUserException(ReviewAlreadyExistException e){
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
   }
 }

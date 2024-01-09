@@ -78,4 +78,5 @@ public class BookingController {
         return ResponseEntity.ok(BookingListDto.of(result));
     }
 
+
 }

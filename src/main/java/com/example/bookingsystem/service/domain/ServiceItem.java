@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import com.example.bookingsystem.booking.domain.Booking;
 import com.example.bookingsystem.business.domain.Business;
+import com.example.bookingsystem.review.domain.Review;
 import com.example.bookingsystem.service.dto.UpdateServiceItemDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +41,8 @@ public class ServiceItem {
   @OneToMany(mappedBy = "serviceItem")
   private List<Booking> bookingList;
 
+  @OneToMany(mappedBy = "serviceItem")
+  private List<Review> reviewList;
 
   // update service information (name, description, price, duration)
   public void changeServiceInfo(UpdateServiceItemDto updateServiceItemDto) {
