@@ -5,14 +5,17 @@ import com.example.bookingsystem.booking.domain.BookingStatus;
 import com.example.bookingsystem.booking.repository.BookingRepository;
 import com.example.bookingsystem.exception.BookingNotFoundException;
 import com.example.bookingsystem.exception.ReviewAlreadyExistException;
+import com.example.bookingsystem.exception.ReviewNotFoundException;
 import com.example.bookingsystem.exception.UnauthorizedUserException;
 import com.example.bookingsystem.review.domain.Review;
 import com.example.bookingsystem.review.dto.NewReviewDto;
 import com.example.bookingsystem.review.dto.ReviewDetailDto;
+import com.example.bookingsystem.review.dto.UpdateReviewDto;
 import com.example.bookingsystem.review.repository.ReviewRepository;
 import com.example.bookingsystem.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -48,6 +51,17 @@ public class ReviewServiceImpl implements ReviewService {
                 .build();
         // save
         reviewRepository.save(review);
+        return ReviewDetailDto.of(review);
+    }
+
+    @Override
+    @Transactional
+    public ReviewDetailDto updateReview(Long reviewId, UpdateReviewDto updateReviewDto) {
+        // find review
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(()-> new ReviewNotFoundException("Booking not found with ID: " + reviewId));
+        // update
+        review.changeReviewDetails(updateReviewDto);
         return ReviewDetailDto.of(review);
     }
 }
