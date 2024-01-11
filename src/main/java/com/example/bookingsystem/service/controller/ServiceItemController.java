@@ -21,7 +21,7 @@ public class ServiceItemController {
 
     private final ServiceItemService serviceItemService;
 
-    // API endpoint for adding a new service for a business
+    // API endpoint for adding a new service for a business (only business can use this features)
     @PostMapping("/business/{businessId}/service")
     public ResponseEntity<ServiceItemDetailDto> createService(
             @PathVariable Long businessId,
@@ -32,7 +32,7 @@ public class ServiceItemController {
     }
 
 
-    // API endpoint for updating service basic information
+    // API endpoint for updating service basic information (only business can use this features)
     @PutMapping("/business/service/{serviceId}")
     public ResponseEntity<ServiceItemDetailDto> updateService(
             @PathVariable Long serviceId,
@@ -42,7 +42,7 @@ public class ServiceItemController {
         return ResponseEntity.ok(serviceItemDetailDto);
     }
 
-    // API endpoint for deleting service
+    // API endpoint for deleting service (only business can use this features)
     @DeleteMapping("/business/service/{serviceId}")
     public ResponseEntity<?> deleteService(
             @PathVariable Long serviceId) {
@@ -65,12 +65,28 @@ public class ServiceItemController {
     public ResponseEntity<ServiceItemListDto> getAllServices(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
-            @RequestParam(name = "sortBy", defaultValue = "name") String SortBy,
+            @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
             @RequestParam(name = "sortOrder", defaultValue = "ASC") String sortOrder) {
 
-        Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), SortBy);
+        Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<ServiceItem> result = serviceItemService.getAllServices(pageable);
+        return ResponseEntity.ok(ServiceItemListDto.of(result));
+    }
+
+
+    // API endpoint for reading all services by business
+    @GetMapping("/services/business/{businessId}")
+    public ResponseEntity<ServiceItemListDto> getAllServicesByBusiness(
+            @PathVariable Long businessId,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = "ASC") String sortOrder) {
+
+        Sort sort = Sort.by(Sort.Direction.fromString(sortOrder),sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<ServiceItem> result = serviceItemService.getAllServicesByBusiness(businessId, pageable);
         return ResponseEntity.ok(ServiceItemListDto.of(result));
     }
 

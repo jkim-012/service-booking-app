@@ -1,14 +1,9 @@
 package com.example.bookingsystem.review.dto;
 
-import com.example.bookingsystem.booking.domain.Booking;
 import com.example.bookingsystem.booking.dto.BookingDetailDto;
 import com.example.bookingsystem.review.domain.Review;
-import com.example.bookingsystem.service.domain.ServiceItem;
 import com.example.bookingsystem.service.dto.ServiceItemDetailDto;
 import lombok.*;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
 @Getter
 @Setter

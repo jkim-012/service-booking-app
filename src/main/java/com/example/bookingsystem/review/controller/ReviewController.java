@@ -1,7 +1,5 @@
 package com.example.bookingsystem.review.controller;
 
-import com.example.bookingsystem.booking.dto.BookingDetailDto;
-import com.example.bookingsystem.booking.dto.UpdateBookingDto;
 import com.example.bookingsystem.review.dto.NewReviewDto;
 import com.example.bookingsystem.review.dto.ReviewDetailDto;
 import com.example.bookingsystem.review.dto.UpdateReviewDto;

@@ -122,4 +122,10 @@ public class ServiceItemServiceImpl implements ServiceItemService {
         Page<ServiceItem> serviceItems = serviceItemRepository.findAll(pageable);
         return serviceItems;
     }
+
+    @Override
+    public Page<ServiceItem> getAllServicesByBusiness(Long businessId, Pageable pageable) {
+        Page<ServiceItem> serviceItems = serviceItemRepository.findAllByBusinessId(businessId, pageable);
+        return serviceItems;
+    }
 }

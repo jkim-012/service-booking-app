@@ -8,9 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ServiceItemService {
-  ServiceItemDetailDto createService(Long businessId, NewServiceItemDto newServiceDto);
-  ServiceItemDetailDto updateService(Long serviceId, UpdateServiceItemDto updateServiceItemDto);
-  void deleteService(Long serviceId);
-  ServiceItemDetailDto getServiceDetails(Long serviceId);
-  Page<ServiceItem> getAllServices(Pageable pageable);
+    ServiceItemDetailDto createService(Long businessId, NewServiceItemDto newServiceDto);
+
+    ServiceItemDetailDto updateService(Long serviceId, UpdateServiceItemDto updateServiceItemDto);
+
+    void deleteService(Long serviceId);
+
+    ServiceItemDetailDto getServiceDetails(Long serviceId);
+
+    Page<ServiceItem> getAllServices(Pageable pageable);
+
+    Page<ServiceItem> getAllServicesByBusiness(Long businessId, Pageable pageable);
 }

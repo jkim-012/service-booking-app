@@ -101,6 +101,7 @@ public class Business {
     private List<Booking> bookingList;
 
 
+
     // create business
     public static Business create(NewBusinessDto newBusinessDto, Member member) {
         return Business.builder()
@@ -148,6 +149,7 @@ public class Business {
         this.closeTime = updateHoursDto.getCloseTime();
     }
 
+    // update business basic information
     public void changeBasicInfo(UpdateBasicInfoDto updateBasicInfoDto) {
         if (updateBasicInfoDto.getName() != null) {
             this.name = updateBasicInfoDto.getName();
