@@ -9,6 +9,7 @@ import com.example.bookingsystem.business.domain.Business;
 import com.example.bookingsystem.business.repository.BusinessRepository;
 import com.example.bookingsystem.exception.BookmarkNotFoundException;
 import com.example.bookingsystem.exception.BusinessNotFoundException;
+import com.example.bookingsystem.exception.UnauthorizedUserException;
 import com.example.bookingsystem.member.domain.Member;
 import com.example.bookingsystem.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +56,21 @@ public class BookmarkServiceImpl implements BookmarkService {
         // update
         bookmark.updateName(newBookmarkName);
         return BookmarkDetailDto.of(bookmark);
+    }
+
+    @Override
+    public void deleteBookmark(Long bookmarkId) {
+        // get logged in member
+        Member member = getLoggedInMember();
+        // get bookmark
+        Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
+                .orElseThrow(()-> new BookmarkNotFoundException("Bookmark not found with ID: " + bookmarkId));
+        // check member's authority
+        if(!bookmark.getMember().equals(member)){
+            throw  new UnauthorizedUserException("Unauthorized: You do not have permission to delete the booking status.");
+        }
+        // delete
+        bookmarkRepository.delete(bookmark);
     }
 
 

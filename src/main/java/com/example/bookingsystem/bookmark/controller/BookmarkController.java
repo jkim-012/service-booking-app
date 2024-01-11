@@ -33,4 +33,13 @@ public class BookmarkController {
         return ResponseEntity.ok(bookmarkDetailDto);
     }
 
+    // API endpoint for deleting business bookmark
+    @DeleteMapping("/bookmark/{bookmarkId}")
+    public ResponseEntity<?> deleteBookmark(
+            @PathVariable Long bookmarkId) {
+
+        bookmarkService.deleteBookmark(bookmarkId);
+        return ResponseEntity.ok("The bookmark is now deleted.");
+    }
+
 }
