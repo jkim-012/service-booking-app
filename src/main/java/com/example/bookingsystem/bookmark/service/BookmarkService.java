@@ -5,4 +5,5 @@ import com.example.bookingsystem.bookmark.dto.BookmarkDetailDto;
 
 public interface BookmarkService {
     BookmarkDetailDto createBookmark(Long businessId, String bookmarkName);
+    BookmarkDetailDto updateBookmark(Long bookmarkId, String newBookmarkName);
 }

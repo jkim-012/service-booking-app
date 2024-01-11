@@ -49,11 +49,16 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(ReviewAlreadyExistException.class)
   public ResponseEntity<String> handleReviewAlreadyExistException(ReviewAlreadyExistException e){
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
   }
 
   @ExceptionHandler(ReviewNotFoundException.class)
   public ResponseEntity<String> handleReviewNotFoundException(ReviewNotFoundException e){
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+  }
+
+  @ExceptionHandler(BookmarkNotFoundException.class)
+  public ResponseEntity<String> handleBookmarkNotFoundException(BookmarkNotFoundException e){
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
   }
 }

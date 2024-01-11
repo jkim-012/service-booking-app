@@ -17,9 +17,19 @@ public class BookmarkController {
     @PostMapping("/bookmark/{businessId}")
     public ResponseEntity<BookmarkDetailDto> createBookmark(
             @PathVariable Long businessId,
-            @RequestParam String bookmarkName) {
+            @RequestParam String newBookmarkName) {
 
-        BookmarkDetailDto bookmarkDetailDto = bookmarkService.createBookmark(businessId, bookmarkName);
+        BookmarkDetailDto bookmarkDetailDto = bookmarkService.createBookmark(businessId, newBookmarkName);
+        return ResponseEntity.ok(bookmarkDetailDto);
+    }
+
+    // API endpoint for updating business bookmark
+    @PatchMapping("/bookmark/{bookmarkId}")
+    public ResponseEntity<BookmarkDetailDto> updateBookmarkName(
+            @PathVariable Long bookmarkId,
+            @RequestParam String newBookmarkName) {
+
+        BookmarkDetailDto bookmarkDetailDto = bookmarkService.updateBookmark(bookmarkId, newBookmarkName);
         return ResponseEntity.ok(bookmarkDetailDto);
     }
 

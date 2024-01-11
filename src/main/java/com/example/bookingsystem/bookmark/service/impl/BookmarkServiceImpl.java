@@ -1,11 +1,13 @@
 package com.example.bookingsystem.bookmark.service.impl;
 
+import com.example.bookingsystem.booking.dto.BookingDetailDto;
 import com.example.bookingsystem.bookmark.domain.Bookmark;
 import com.example.bookingsystem.bookmark.dto.BookmarkDetailDto;
 import com.example.bookingsystem.bookmark.repository.BookmarkRepository;
 import com.example.bookingsystem.bookmark.service.BookmarkService;
 import com.example.bookingsystem.business.domain.Business;
 import com.example.bookingsystem.business.repository.BusinessRepository;
+import com.example.bookingsystem.exception.BookmarkNotFoundException;
 import com.example.bookingsystem.exception.BusinessNotFoundException;
 import com.example.bookingsystem.member.domain.Member;
 import com.example.bookingsystem.member.repository.MemberRepository;
@@ -14,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +44,19 @@ public class BookmarkServiceImpl implements BookmarkService {
         bookmarkRepository.save(bookmark);
         return BookmarkDetailDto.of(bookmark);
     }
+
+    @Override
+    @Transactional
+    public BookmarkDetailDto updateBookmark(Long bookmarkId, String newBookmarkName) {
+        // get bookmark
+        Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
+                .orElseThrow(()-> new BookmarkNotFoundException("Bookmark not found with ID: " + bookmarkId));
+
+        // update
+        bookmark.updateName(newBookmarkName);
+        return BookmarkDetailDto.of(bookmark);
+    }
+
 
     private Business getBusiness(Long businessId) {
         Business business = businessRepository.findById(businessId)

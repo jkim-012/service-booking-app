@@ -32,4 +32,8 @@ public class Bookmark {
     @ManyToOne
     @JoinColumn(name = "business_id")
     Business business;
+
+    public void updateName(String newBookmarkName) {
+        this.name = newBookmarkName;
+    }
 }
