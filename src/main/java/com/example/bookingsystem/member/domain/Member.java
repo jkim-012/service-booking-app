@@ -1,6 +1,7 @@
 package com.example.bookingsystem.member.domain;
 
 import com.example.bookingsystem.booking.domain.Booking;
+import com.example.bookingsystem.bookmark.domain.Bookmark;
 import com.example.bookingsystem.business.domain.Business;
 import java.time.LocalDate;
 import java.util.List;
@@ -52,5 +53,8 @@ public class Member {
 
   @OneToMany(mappedBy = "member")
   private List<Booking> bookingList;
+
+  @OneToMany(mappedBy = "member")
+  private List<Bookmark> bookmarkList;
 
 }
