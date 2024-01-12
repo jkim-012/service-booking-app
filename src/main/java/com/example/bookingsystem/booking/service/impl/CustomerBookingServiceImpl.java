@@ -36,6 +36,13 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     @Override
     public CustomerBookingDetailDto createBooking(Long serviceId, NewBookingDto newBookingDto) {
 
+        // check the booking date is later than current time
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime bookingTime = newBookingDto.getScheduledAt();
+
+        if (bookingTime.isBefore(currentTime)){
+            throw new BookingNotAvailableException("Booking date must be later than the current time.");
+        }
         // get logged in member
         Member member = getLoggedInMember();
         if (!member.getRole().equals(Role.CUSTOMER)) {
@@ -61,7 +68,6 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
                 .build();
 
         bookingRepository.save(booking);
-
         return CustomerBookingDetailDto.of(booking);
     }
 
