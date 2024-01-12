@@ -21,7 +21,7 @@ public class ServiceItemController {
 
     private final ServiceItemService serviceItemService;
 
-    // API endpoint for adding a new service for a business (only business can use this features)
+    // API endpoint for adding a new service for a business (only business can use this feature)
     @PostMapping("/business/{businessId}/service")
     public ResponseEntity<ServiceItemDetailDto> createService(
             @PathVariable Long businessId,
@@ -32,7 +32,7 @@ public class ServiceItemController {
     }
 
 
-    // API endpoint for updating service basic information (only business can use this features)
+    // API endpoint for updating service basic information (only business can use this feature)
     @PutMapping("/business/service/{serviceId}")
     public ResponseEntity<ServiceItemDetailDto> updateService(
             @PathVariable Long serviceId,
@@ -42,7 +42,7 @@ public class ServiceItemController {
         return ResponseEntity.ok(serviceItemDetailDto);
     }
 
-    // API endpoint for deleting service (only business can use this features)
+    // API endpoint for deleting service (only business can use this feature)
     @DeleteMapping("/business/service/{serviceId}")
     public ResponseEntity<?> deleteService(
             @PathVariable Long serviceId) {
@@ -51,7 +51,7 @@ public class ServiceItemController {
         return ResponseEntity.ok("The service is now deleted.");
     }
 
-    // API endpoint for reading service details
+    // API endpoint for reading a service details
     @GetMapping("/service/{serviceId}")
     public ResponseEntity<ServiceItemDetailDto> getService(
             @PathVariable Long serviceId) {
@@ -60,7 +60,7 @@ public class ServiceItemController {
         return ResponseEntity.ok(serviceItemDetailDto);
     }
 
-    // API endpoint for reading all services
+    // API endpoint for reading all registered services
     @GetMapping("/service/list")
     public ResponseEntity<ServiceItemListDto> getAllServices(
             @RequestParam(name = "page", defaultValue = "0") int page,

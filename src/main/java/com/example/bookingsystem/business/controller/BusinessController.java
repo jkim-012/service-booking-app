@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/api/business")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
 public class BusinessController {
@@ -34,8 +34,8 @@ public class BusinessController {
   private final BusinessService businessService;
 
 
-  // API endpoint for adding a new business
-  @PostMapping()
+  // API endpoint for adding a new business (only business can use this feature)
+  @PostMapping("/business")
   public ResponseEntity<BusinessDetailDto> createBusiness(
       @RequestBody @Valid NewBusinessDto newBusinessDto) {
 
@@ -43,8 +43,8 @@ public class BusinessController {
     return ResponseEntity.ok(businessDetailDto);
   }
 
-  // API endpoint for updating the existed business address info
-  @PutMapping("/{businessId}/address")
+  // API endpoint for updating the existed business address info (only business can use this feature)
+  @PutMapping("/business/{businessId}/address")
   public ResponseEntity<UpdateAddressDto.Response> updateAddress(
       @PathVariable Long businessId,
       @RequestBody @Valid UpdateAddressDto.Request request) {
@@ -53,8 +53,8 @@ public class BusinessController {
     return ResponseEntity.ok(response);
   }
 
-  // API endpoint for updating business active status
-  @PatchMapping("/{businessId}/active-status")
+  // API endpoint for updating business active status (only business can use this feature)
+  @PatchMapping("/business/{businessId}/active-status")
   public ResponseEntity<?> updateBusinessActiveStatus(
       @PathVariable Long businessId,
       @RequestParam boolean isActive) {
@@ -63,8 +63,8 @@ public class BusinessController {
     return ResponseEntity.ok("The business active status is updated.");
   }
 
-  // API endpoint for updating business open status
-  @PatchMapping("/{businessId}/open-status")
+  // API endpoint for updating business open status (only business can use this feature)
+  @PatchMapping("/business/{businessId}/open-status")
   public ResponseEntity<?> updateBusinessOpenStatus(
       @PathVariable Long businessId,
       @RequestParam boolean isCurrentlyOpen) {
@@ -73,8 +73,8 @@ public class BusinessController {
     return ResponseEntity.ok("The business open status is updated.");
   }
 
-  // API endpoint for updating business hours
-  @PutMapping("/{businessId}/hours")
+  // API endpoint for updating business hours (only business can use this feature)
+  @PutMapping("/business/{businessId}/hours")
   public ResponseEntity<?> updateBusinessHours(
       @PathVariable Long businessId,
       @RequestBody @Valid UpdateHoursDto updateHoursDto) {
@@ -83,8 +83,8 @@ public class BusinessController {
     return ResponseEntity.ok("The business hours are updated.");
   }
 
-  // API endpoint for updating basic information (name, description, phone)
-  @PutMapping("/{businessId}/basic-info")
+  // API endpoint for updating basic information (name, description, phone) (only business can use this feature)
+  @PutMapping("/business/{businessId}/basic-info")
   public ResponseEntity<?> updateBasicInfo(
       @PathVariable Long businessId,
       @RequestBody @Valid UpdateBasicInfoDto updateBasicInfoDto) {
@@ -93,8 +93,18 @@ public class BusinessController {
     return ResponseEntity.ok("The business basic information is updated.");
   }
 
+  // API endpoint for deleting business (only business can use this feature)
+  @DeleteMapping("/business/{businessId}")
+  public ResponseEntity<?> deleteBusiness(
+      @PathVariable Long businessId) {
+
+    businessService.deleteBusiness(businessId);
+    return ResponseEntity.ok("The business is now deleted.");
+  }
+
+
   // API endpoint for reading business details
-  @GetMapping("/{businessId}/details")
+  @GetMapping("/{businessId}/business-details")
   public ResponseEntity<BusinessDetailDto> getBusinessDetails(
       @PathVariable Long businessId) {
 
@@ -103,7 +113,7 @@ public class BusinessController {
   }
 
   // API endpoint for reading business list
-  @GetMapping("/list")
+  @GetMapping("/business-list")
   public ResponseEntity<BusinessListDto> getAllBusinesses(
       @RequestParam(name = "page", defaultValue = "0") int page,
       @RequestParam(name = "size", defaultValue = "10") int size,
@@ -117,12 +127,4 @@ public class BusinessController {
     return ResponseEntity.ok(BusinessListDto.of(result));
   }
 
-  // API endpoint for deleting business
-  @DeleteMapping("/{businessId}")
-  public ResponseEntity<?> deleteBusiness(
-      @PathVariable Long businessId) {
-
-    businessService.deleteBusiness(businessId);
-    return ResponseEntity.ok("The business is now deleted.");
-  }
 }

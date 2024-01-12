@@ -49,10 +49,15 @@ public class BookmarkServiceImpl implements BookmarkService {
     @Override
     @Transactional
     public BookmarkDetailDto updateBookmark(Long bookmarkId, String newBookmarkName) {
+        // get logged in member
+        Member member = getLoggedInMember();
         // get bookmark
         Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
                 .orElseThrow(()-> new BookmarkNotFoundException("Bookmark not found with ID: " + bookmarkId));
-
+        // check member's authority
+        if(!bookmark.getMember().equals(member)){
+            throw  new UnauthorizedUserException("Unauthorized: You do not have permission to update the booking status.");
+        }
         // update
         bookmark.updateName(newBookmarkName);
         return BookmarkDetailDto.of(bookmark);

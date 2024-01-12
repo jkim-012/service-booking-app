@@ -63,7 +63,7 @@ public class BookingController {
         return ResponseEntity.ok(bookingDetailDto);
     }
 
-    // API endpoint for reading booking list for a business
+    // API endpoint for reading booking list for a business (only business can use this feature)
     @GetMapping("/business/{businessId}/booking/list")
     public ResponseEntity<BookingListDto> getBookingListByBusiness(
             @PathVariable Long businessId,
