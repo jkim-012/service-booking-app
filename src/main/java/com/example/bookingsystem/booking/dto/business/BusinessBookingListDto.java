@@ -1,4 +1,4 @@
-package com.example.bookingsystem.booking.dto;
+package com.example.bookingsystem.booking.dto.business;
 
 import com.example.bookingsystem.booking.domain.Booking;
 import com.example.bookingsystem.global.PageInfo;
@@ -12,12 +12,12 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookingListDto {
+public class BusinessBookingListDto {
 
     private PageInfo pageInfo;
-    private List<BookingDetailDto> BookingDetailDtoList;
+    private List<BusinessBookingDetailDto> list;
 
-    public static BookingListDto of(Page<Booking> result){
+    public static BusinessBookingListDto of(Page<Booking> result){
 
         PageInfo pageInfo = PageInfo.builder()
                 .page(result.getNumber())
@@ -26,9 +26,9 @@ public class BookingListDto {
                 .totalElements(result.getTotalElements())
                 .build();
 
-        return BookingListDto.builder()
+        return BusinessBookingListDto.builder()
                 .pageInfo(pageInfo)
-                .BookingDetailDtoList(result.map(BookingDetailDto::of).getContent())
+                .list(result.map(BusinessBookingDetailDto::of).getContent())
                 .build();
     }
 }

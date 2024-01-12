@@ -22,6 +22,7 @@ public class SecurityConfig {
         .authorizeRequests()
         .antMatchers("/api/member/**", "/").permitAll()
         .antMatchers("/api/business/**").hasRole("BUSINESS")
+        .antMatchers("/api/customer/**").hasRole("CUSTOMER")
         .anyRequest().authenticated()
         .and()
         .httpBasic()

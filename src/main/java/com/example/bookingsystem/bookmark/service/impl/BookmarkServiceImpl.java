@@ -1,6 +1,5 @@
 package com.example.bookingsystem.bookmark.service.impl;
 
-import com.example.bookingsystem.booking.dto.BookingDetailDto;
 import com.example.bookingsystem.bookmark.domain.Bookmark;
 import com.example.bookingsystem.bookmark.dto.BookmarkDetailDto;
 import com.example.bookingsystem.bookmark.repository.BookmarkRepository;

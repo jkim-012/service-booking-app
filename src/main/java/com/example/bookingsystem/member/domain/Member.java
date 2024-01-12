@@ -49,7 +49,7 @@ public class Member {
 
   // mapping
   @OneToMany(mappedBy = "member")
-  private List<Business> storeList;
+  private List<Business> businessList;
 
   @OneToMany(mappedBy = "member")
   private List<Booking> bookingList;
