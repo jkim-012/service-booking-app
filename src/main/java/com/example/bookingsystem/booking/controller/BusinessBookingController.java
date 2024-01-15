@@ -45,7 +45,7 @@ public class BusinessBookingController {
 
     // API endpoint for reading booking details by business
     @GetMapping("/business/bookings/{bookingId}")
-    public ResponseEntity<BusinessBookingDetailDto> getBookingDetailsForCustomer(
+    public ResponseEntity<BusinessBookingDetailDto> getBookingDetailsForBusiness(
             @PathVariable Long bookingId) {
 
         BusinessBookingDetailDto businessBookingDetailDto =

@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -14,7 +16,7 @@ public class BookmarkController {
     private final BookmarkService bookmarkService;
 
     // API endpoint for adding business bookmark
-    @PostMapping("/bookmark/{businessId}")
+    @PostMapping("/bookmarks/{businessId}")
     public ResponseEntity<BookmarkDetailDto> createBookmark(
             @PathVariable Long businessId,
             @RequestParam String newBookmarkName) {
@@ -24,7 +26,7 @@ public class BookmarkController {
     }
 
     // API endpoint for updating business bookmark
-    @PatchMapping("/bookmark/{bookmarkId}")
+    @PatchMapping("/bookmarks/{bookmarkId}")
     public ResponseEntity<BookmarkDetailDto> updateBookmarkName(
             @PathVariable Long bookmarkId,
             @RequestParam String newBookmarkName) {
@@ -34,12 +36,20 @@ public class BookmarkController {
     }
 
     // API endpoint for deleting business bookmark
-    @DeleteMapping("/bookmark/{bookmarkId}")
+    @DeleteMapping("/bookmarks/{bookmarkId}")
     public ResponseEntity<?> deleteBookmark(
             @PathVariable Long bookmarkId) {
 
         bookmarkService.deleteBookmark(bookmarkId);
         return ResponseEntity.ok("The bookmark is now deleted.");
+    }
+
+    // API endpoint for reading a list of saved bookmarks
+    @GetMapping("/bookmarks/list")
+    public ResponseEntity<List<BookmarkDetailDto>> getAllBookmarks(){
+
+        List<BookmarkDetailDto> bookmarkList = bookmarkService.getAllBookmarks();
+        return ResponseEntity.ok(bookmarkList);
     }
 
 }
