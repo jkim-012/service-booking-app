@@ -84,7 +84,12 @@ public class BookmarkServiceImpl implements BookmarkService {
     public List<BookmarkDetailDto> getAllBookmarks() {
         // get logged in member
         Long memberId = getLoggedInMember().getId();
+        // get the list
         List<Bookmark> bookmarkList = bookmarkRepository.getAllByMemberId(memberId);
+        // if member doesn't have any bookmark
+        if (bookmarkList.isEmpty()){
+            throw new BookmarkNotFoundException("There is no bookmark.");
+        }
         return bookmarkList.stream().map(BookmarkDetailDto::of).collect(Collectors.toList());
     }
 
