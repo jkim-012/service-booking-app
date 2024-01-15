@@ -17,7 +17,7 @@ public class ReviewController {
 
 
     // API endpoint for creating a review for a complete booking
-    @PostMapping("/booking/{bookingId}/review")
+    @PostMapping("/bookings/{bookingId}/reviews")
     public ResponseEntity<ReviewDetailDto> createReview(
             @PathVariable Long bookingId,
             @RequestBody NewReviewDto newReviewDto) {
@@ -27,7 +27,7 @@ public class ReviewController {
     }
 
     // API endpoint for updating a review for a complete booking
-    @PutMapping("booking/review/{reviewId}")
+    @PutMapping("bookings/reviews/{reviewId}")
     public ResponseEntity<ReviewDetailDto> updateReview(
             @PathVariable Long reviewId,
             @RequestBody UpdateReviewDto updateReviewDto){
