@@ -1,10 +1,16 @@
 package com.example.bookingsystem.review.controller;
 
+import com.example.bookingsystem.review.domain.Review;
 import com.example.bookingsystem.review.dto.NewReviewDto;
 import com.example.bookingsystem.review.dto.ReviewDetailDto;
+import com.example.bookingsystem.review.dto.ReviewListDto;
 import com.example.bookingsystem.review.dto.UpdateReviewDto;
 import com.example.bookingsystem.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,13 +36,26 @@ public class ReviewController {
     @PutMapping("/bookings/reviews/{reviewId}")
     public ResponseEntity<ReviewDetailDto> updateReview(
             @PathVariable Long reviewId,
-            @RequestBody UpdateReviewDto updateReviewDto){
+            @RequestBody UpdateReviewDto updateReviewDto) {
 
         ReviewDetailDto reviewDetailDto = reviewService.updateReview(reviewId, updateReviewDto);
         return ResponseEntity.ok(reviewDetailDto);
     }
 
+    // API endpoint for updating a review for a complete booking
+    @GetMapping("/bookings/reviews/businesses/{businessId}")
+    public ResponseEntity<ReviewListDto> getAllReviewsByBusiess(
+            @PathVariable Long businessId,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "sortBy", defaultValue = "createdAt") String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = "ASC") String sortOrder){
 
+        Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortBy);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Review> result = reviewService.getAllReviewsByBusiness(pageable, businessId);
+        return ResponseEntity.ok(ReviewListDto.of(result));
+    }
 
 
 }

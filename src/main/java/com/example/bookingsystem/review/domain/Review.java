@@ -8,8 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -33,6 +36,15 @@ public class Review {
     @OneToOne
     @JoinColumn(name = "booking_id")
     private Booking booking;
+
+    // review create & update - date and time
+    @Column(nullable = false)
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @Column
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
 
     // update review

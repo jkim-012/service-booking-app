@@ -19,7 +19,7 @@ import org.springframework.data.domain.Page;
 public class BusinessListDto {
 
   private PageInfo pageInfo;
-  List<BusinessDetailDto> businessDetailDtoList;
+  private List<BusinessDetailDto> businessDetailDtoList;
 
   // page 정보와 주문상품 리스트를 반환
   public static BusinessListDto of(Page<Business> result) {
