@@ -33,7 +33,7 @@ public class ServiceItemController {
 
 
     // API endpoint for updating service basic information (only business can use this feature)
-    @PutMapping("/business/service/{serviceId}")
+    @PutMapping("/business/services/{serviceId}")
     public ResponseEntity<ServiceItemDetailDto> updateService(
             @PathVariable Long serviceId,
             @RequestBody UpdateServiceItemDto updateServiceItemDto) {
@@ -43,7 +43,7 @@ public class ServiceItemController {
     }
 
     // API endpoint for deleting service (only business can use this feature)
-    @DeleteMapping("/business/service/{serviceId}")
+    @DeleteMapping("/business/services/{serviceId}")
     public ResponseEntity<?> deleteService(
             @PathVariable Long serviceId) {
 
@@ -52,7 +52,7 @@ public class ServiceItemController {
     }
 
     // API endpoint for reading a service details
-    @GetMapping("/service/{serviceId}")
+    @GetMapping("/services/{serviceId}")
     public ResponseEntity<ServiceItemDetailDto> getService(
             @PathVariable Long serviceId) {
 
@@ -61,7 +61,7 @@ public class ServiceItemController {
     }
 
     // API endpoint for reading all registered services
-    @GetMapping("/service/list")
+    @GetMapping("/services/list")
     public ResponseEntity<ServiceItemListDto> getAllServices(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
@@ -76,7 +76,7 @@ public class ServiceItemController {
 
 
     // API endpoint for reading all services by business
-    @GetMapping("/services/business/{businessId}")
+    @GetMapping("/services/businesses/{businessId}")
     public ResponseEntity<ServiceItemListDto> getAllServicesByBusiness(
             @PathVariable Long businessId,
             @RequestParam(name = "page", defaultValue = "0") int page,

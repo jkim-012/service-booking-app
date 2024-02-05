@@ -54,6 +54,7 @@ public class BusinessController {
   }
 
   // API endpoint for updating business active status (only business can use this feature)
+  // active: open for bookings / inactive: not open for bookings
   @PatchMapping("/business/{businessId}/active-status")
   public ResponseEntity<?> updateBusinessActiveStatus(
       @PathVariable Long businessId,
@@ -113,7 +114,7 @@ public class BusinessController {
   }
 
   // API endpoint for reading business list
-  @GetMapping("businesses/business-list")
+  @GetMapping("/businesses/business-list")
   public ResponseEntity<BusinessListDto> getAllBusinesses(
       @RequestParam(name = "page", defaultValue = "0") int page,
       @RequestParam(name = "size", defaultValue = "10") int size,

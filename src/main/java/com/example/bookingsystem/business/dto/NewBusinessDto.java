@@ -30,7 +30,6 @@ public class NewBusinessDto {
   @NotBlank(message = "Phone number is a required field.")
   private String phone;
 
-//  @NotBlank(message = "Province is a required field.")
   private Province province;
 
   @NotBlank(message = "City is a required field.")
