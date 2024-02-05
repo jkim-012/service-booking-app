@@ -42,6 +42,16 @@ public class ReviewController {
         return ResponseEntity.ok(reviewDetailDto);
     }
 
+    // API endpoint for reading a review
+    @GetMapping("/bookings/reviews/{reviewId}")
+    public ResponseEntity<ReviewDetailDto> readReviewDetails(
+            @PathVariable Long reviewId){
+
+        ReviewDetailDto reviewDetailDto = reviewService.getReview(reviewId);
+        return ResponseEntity.ok(reviewDetailDto);
+    }
+
+
     // API endpoint for getting all reviews by business
     @GetMapping("/business/bookings/reviews/{businessId}")
     public ResponseEntity<ReviewListDto> getAllReviewsByBusiness(

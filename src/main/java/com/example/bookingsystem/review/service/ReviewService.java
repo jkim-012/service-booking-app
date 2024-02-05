@@ -11,4 +11,5 @@ public interface ReviewService {
     ReviewDetailDto createReview(Long bookingId, NewReviewDto newReviewDto);
     ReviewDetailDto updateReview(Long reviewId, UpdateReviewDto updateReviewDto);
     Page<Review> getAllReviewsByBusiness(Pageable pageable, Long businessId);
+    ReviewDetailDto getReview(Long reviewId);
 }

@@ -66,6 +66,13 @@ public class ReviewServiceImpl implements ReviewService {
         review.changeReviewDetails(updateReviewDto);
         return ReviewDetailDto.of(review);
     }
+    @Override
+    public ReviewDetailDto getReview(Long reviewId) {
+        // find review
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(()-> new ReviewNotFoundException("Booking not found with ID: " + reviewId));
+        return ReviewDetailDto.of(review);
+    }
 
     @Override
     public Page<Review> getAllReviewsByBusiness(Pageable pageable, Long businessId) {
@@ -73,4 +80,5 @@ public class ReviewServiceImpl implements ReviewService {
         Page<Review> reviews = reviewRepository.findAllByBooking_Business_Id(pageable, businessId);
         return reviews;
     }
+
 }
