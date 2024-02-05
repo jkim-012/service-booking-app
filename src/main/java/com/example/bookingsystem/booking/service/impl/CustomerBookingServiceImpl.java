@@ -58,7 +58,6 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
         }
         // book an appointment
         Booking booking = Booking.builder()
-                .createdAt(LocalDateTime.now())
                 .scheduledAt(newBookingDto.getScheduledAt())
                 .memo(newBookingDto.getMemo())
                 .status(BookingStatus.BOOKED)

@@ -21,7 +21,7 @@ public class BusinessBookingController {
 
     private final BusinessBookingService businessService;
 
-    // API endpoint for updating a booking schedule or memo by business
+    // API endpoint for updating a booking schedule or memo by business (only business can use this feature)
     @PutMapping("/business/bookings/{bookingId}")
     public ResponseEntity<BusinessBookingDetailDto> updateBookingByBusiness(
             @PathVariable Long bookingId,
@@ -32,7 +32,7 @@ public class BusinessBookingController {
         return ResponseEntity.ok(businessBookingDetailDto);
     }
 
-    // API endpoint for updating booking status by customer (cancel, complete)
+    // API endpoint for updating booking status(cancel/complete) by business (only business can use this feature)
     @PatchMapping("/business/bookings/{bookingId}/status/{newStatus}")
     public ResponseEntity<BusinessBookingDetailDto> updateBookingStatusByBusiness(
             @PathVariable Long bookingId,
@@ -43,7 +43,7 @@ public class BusinessBookingController {
         return ResponseEntity.ok(businessBookingDetailDto);
     }
 
-    // API endpoint for reading booking details by business
+    // API endpoint for reading booking details by business (only business can use this feature)
     @GetMapping("/business/bookings/{bookingId}")
     public ResponseEntity<BusinessBookingDetailDto> getBookingDetailsForBusiness(
             @PathVariable Long bookingId) {

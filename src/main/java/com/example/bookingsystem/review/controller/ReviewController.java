@@ -43,7 +43,7 @@ public class ReviewController {
     }
 
     // API endpoint for updating a review for a complete booking
-    @GetMapping("/bookings/reviews/businesses/{businessId}")
+    @GetMapping("/business/bookings/reviews/{businessId}")
     public ResponseEntity<ReviewListDto> getAllReviewsByBusiess(
             @PathVariable Long businessId,
             @RequestParam(name = "page", defaultValue = "0") int page,

@@ -70,7 +70,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Page<Review> getAllReviewsByBusiness(Pageable pageable, Long businessId) {
 
-        Page<Review> = reviewRepository.findAllByBusiess
-        return null;
+        Page<Review> reviews = reviewRepository.findAllByBooking_Business_Id(pageable, businessId);
+        return reviews;
     }
 }
