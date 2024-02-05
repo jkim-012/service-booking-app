@@ -3,7 +3,6 @@ package com.example.bookingsystem.review.domain;
 
 import com.example.bookingsystem.booking.domain.Booking;
 import com.example.bookingsystem.review.dto.UpdateReviewDto;
-import com.example.bookingsystem.service.domain.ServiceItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

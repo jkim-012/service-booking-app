@@ -24,7 +24,7 @@ public class CustomerBookingController {
     private final CustomerBookingService customerService;
 
     // API endpoint for booking an appointment
-    @PostMapping("/customer/bookings/services/{serviceId}")
+    @PostMapping("/customer/booking/services/{serviceId}")
     public ResponseEntity<CustomerBookingDetailDto> createBooking(
             @PathVariable Long serviceId,
             @RequestBody NewBookingDto newBookingDto){

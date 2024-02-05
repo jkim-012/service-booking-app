@@ -105,7 +105,7 @@ public class BusinessController {
 
 
   // API endpoint for reading business details
-  @GetMapping("/businesses/{businessId}/")
+  @GetMapping("/businesses/{businessId}")
   public ResponseEntity<BusinessDetailDto> getBusinessDetails(
       @PathVariable Long businessId) {
 
@@ -114,7 +114,7 @@ public class BusinessController {
   }
 
   // API endpoint for reading business list
-  @GetMapping("/businesses/business-list")
+  @GetMapping("/businesses/list")
   public ResponseEntity<BusinessListDto> getAllBusinesses(
       @RequestParam(name = "page", defaultValue = "0") int page,
       @RequestParam(name = "size", defaultValue = "10") int size,

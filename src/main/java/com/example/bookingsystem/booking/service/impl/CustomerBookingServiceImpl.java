@@ -36,6 +36,19 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     @Override
     public CustomerBookingDetailDto createBooking(Long serviceId, NewBookingDto newBookingDto) {
 
+        // get logged in member and check if it is a customer
+        Member member = getLoggedInMember();
+        if (!member.getRole().equals(Role.CUSTOMER)) {
+            throw new NotCustomerException("Booking is only allowed for customers.");
+        }
+
+        // check if the business is active
+        // find the service
+        ServiceItem serviceItem = getServiceItemById(serviceId);
+        if (!serviceItem.getBusiness().getIsActive()) {
+            throw new BookingNotAvailableException("Business is currently inactive. Please find other available services.");
+        }
+
         // check the booking date is later than current time
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime bookingTime = newBookingDto.getScheduledAt();
@@ -43,19 +56,13 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
         if (bookingTime.isBefore(currentTime)){
             throw new BookingNotAvailableException("Booking date must be later than the current time.");
         }
-        // get logged in member
-        Member member = getLoggedInMember();
-        if (!member.getRole().equals(Role.CUSTOMER)) {
-            throw new NotCustomerException("Booking is only allowed for customers.");
-        }
-        // find the service
-        ServiceItem serviceItem = getServiceItemById(serviceId);
 
-        // check if booking is available
+        // check if booking is available on the date/time
         Optional<Booking> byScheduledAt = bookingRepository.findByScheduledAt(newBookingDto.getScheduledAt());
         if (byScheduledAt.isPresent()) {
             throw new BookingNotAvailableException("The specified time slot is already booked.");
         }
+
         // book an appointment
         Booking booking = Booking.builder()
                 .scheduledAt(newBookingDto.getScheduledAt())
