@@ -16,7 +16,6 @@ public class ReviewDetailDto {
     private String title;
     private String content;
     private Double rate;
-    private ServiceItemDetailDto serviceItem;
     private BookingDetailDto booking;
     public static ReviewDetailDto of(Review review) {
         return ReviewDetailDto.builder()
@@ -24,7 +23,6 @@ public class ReviewDetailDto {
                 .title(review.getTitle())
                 .content(review.getContent())
                 .rate(review.getRate())
-                .serviceItem(ServiceItemDetailDto.of(review.getServiceItem()))
                 .booking(BookingDetailDto.of(review.getBooking()))
                 .build();
     }

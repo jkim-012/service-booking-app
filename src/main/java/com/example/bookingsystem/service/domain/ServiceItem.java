@@ -41,9 +41,6 @@ public class ServiceItem {
   @OneToMany(mappedBy = "serviceItem")
   private List<Booking> bookingList;
 
-  @OneToMany(mappedBy = "serviceItem")
-  private List<Review> reviewList;
-
   // update service information (name, description, price, duration)
   public void changeServiceInfo(UpdateServiceItemDto updateServiceItemDto) {
     if (updateServiceItemDto.getName() != null){

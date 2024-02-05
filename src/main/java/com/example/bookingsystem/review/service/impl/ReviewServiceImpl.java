@@ -48,7 +48,6 @@ public class ReviewServiceImpl implements ReviewService {
                 .title(newReviewDto.getTitle())
                 .content(newReviewDto.getContent())
                 .rate(newReviewDto.getRate())
-                .serviceItem(booking.getServiceItem())
                 .booking(booking)
                 .build();
         // save

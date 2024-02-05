@@ -31,14 +31,6 @@ public class Review {
     private String content;
     private Double rate;
 
-    @ManyToOne
-    @JoinColumn(name = "service_item_id")
-    private ServiceItem serviceItem;
-
-    @OneToOne
-    @JoinColumn(name = "booking_id")
-    private Booking booking;
-
     // review create & update - date and time
     @Column(nullable = false)
     @CreatedDate
@@ -47,6 +39,11 @@ public class Review {
     @Column
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+
+    @OneToOne
+    @JoinColumn(name = "booking_id")
+    private Booking booking;
 
 
     // update review
