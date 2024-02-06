@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<Review> findByBookingId(Long bookingId);
     Page<Review> findAllByBooking_Business_Id(Pageable pageable, Long businessId);
+    Page<Review> findAllByBooking_ServiceItem_NameContaining(Pageable pageable, String keyword);
 }

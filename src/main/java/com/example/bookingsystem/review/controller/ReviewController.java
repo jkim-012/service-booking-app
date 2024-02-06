@@ -45,7 +45,7 @@ public class ReviewController {
     // API endpoint for reading a review
     @GetMapping("/bookings/reviews/{reviewId}")
     public ResponseEntity<ReviewDetailDto> readReviewDetails(
-            @PathVariable Long reviewId){
+            @PathVariable Long reviewId) {
 
         ReviewDetailDto reviewDetailDto = reviewService.getReview(reviewId);
         return ResponseEntity.ok(reviewDetailDto);
@@ -53,17 +53,32 @@ public class ReviewController {
 
 
     // API endpoint for getting all reviews by business
-    @GetMapping("/business/bookings/reviews/{businessId}")
+    @GetMapping("/bookings/reviews/{businessId}")
     public ResponseEntity<ReviewListDto> getAllReviewsByBusiness(
             @PathVariable Long businessId,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "sortBy", defaultValue = "createdAt") String sortBy,
-            @RequestParam(name = "sortOrder", defaultValue = "ASC") String sortOrder){
+            @RequestParam(name = "sortOrder", defaultValue = "ASC") String sortOrder) {
 
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortBy);
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<Review> result = reviewService.getAllReviewsByBusiness(pageable, businessId);
+        return ResponseEntity.ok(ReviewListDto.of(result));
+    }
+
+    // API endpoint for searching all reviews by service name (keyword input)
+    @GetMapping("/bookings/reviews")
+    public ResponseEntity<ReviewListDto> getAllReviewsByServiceName(
+            @RequestParam(name = "keyword") String keyword,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "sortBy", defaultValue = "createdAt") String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = "ASC") String sortOrder) {
+
+        Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Review> result = reviewService.getAllReviewsByServiceName(keyword, pageable);
         return ResponseEntity.ok(ReviewListDto.of(result));
     }
 

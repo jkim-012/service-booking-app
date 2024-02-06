@@ -39,7 +39,7 @@ public class Review {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-
+    // mapping
     @OneToOne
     @JoinColumn(name = "booking_id")
     private Booking booking;

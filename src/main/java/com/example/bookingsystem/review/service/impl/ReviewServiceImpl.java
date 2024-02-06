@@ -74,8 +74,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Page<Review> getAllReviewsByBusiness(Pageable pageable, Long businessId) {
+    public Page<Review> getAllReviewsByServiceName(String keyword, Pageable pageable) {
+        Page<Review> reviews = reviewRepository.findAllByBooking_ServiceItem_NameContaining(pageable, keyword);
+        return reviews;
+    }
 
+    @Override
+    public Page<Review> getAllReviewsByBusiness(Pageable pageable, Long businessId) {
         Page<Review> reviews = reviewRepository.findAllByBooking_Business_Id(pageable, businessId);
         return reviews;
     }

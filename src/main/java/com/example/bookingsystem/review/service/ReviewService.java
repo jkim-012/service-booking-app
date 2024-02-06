@@ -12,4 +12,5 @@ public interface ReviewService {
     ReviewDetailDto updateReview(Long reviewId, UpdateReviewDto updateReviewDto);
     Page<Review> getAllReviewsByBusiness(Pageable pageable, Long businessId);
     ReviewDetailDto getReview(Long reviewId);
+    Page<Review> getAllReviewsByServiceName(String keyword, Pageable pageable);
 }
