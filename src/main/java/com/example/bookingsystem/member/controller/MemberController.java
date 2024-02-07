@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/api/member")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
 public class MemberController {
@@ -20,7 +20,7 @@ public class MemberController {
   private final MemberService memberService;
 
   // API endpoint for registering
-  @PostMapping()
+  @PostMapping("/member")
   public ResponseEntity<?> register(@RequestBody @Valid NewMemberDto newMemberDto){
 
     memberService.register(newMemberDto);
@@ -28,7 +28,7 @@ public class MemberController {
   }
 
   // 로그인 API
-  @PostMapping("/login")
+  @PostMapping("/member/login")
   public ResponseEntity<?> login(@RequestBody @Valid LoginDto loginDto) {
 
     boolean loginSuccess = memberService.login(loginDto);
