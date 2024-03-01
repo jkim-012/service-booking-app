@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginDto {
+public class LoginRequestDto {
 
   @Email(message = "이메일을 형식에 맞게 입력해 주세요.")
   @NotBlank(message = "이메일은 필수 항목입니다.")

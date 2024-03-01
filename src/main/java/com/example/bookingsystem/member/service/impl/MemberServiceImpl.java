@@ -2,18 +2,16 @@ package com.example.bookingsystem.member.service.impl;
 
 import com.example.bookingsystem.exception.EmailAlreadyExistException;
 import com.example.bookingsystem.member.domain.Member;
-import com.example.bookingsystem.member.dto.LoginDto;
+import com.example.bookingsystem.member.dto.LoginRequestDto;
+import com.example.bookingsystem.member.dto.LoginResponseDto;
 import com.example.bookingsystem.member.dto.NewMemberDto;
 import com.example.bookingsystem.member.repository.MemberRepository;
 import com.example.bookingsystem.member.service.MemberService;
+import com.example.bookingsystem.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +22,7 @@ public class MemberServiceImpl implements MemberService {
   private final MemberRepository memberRepository;
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
-  private final UserDetailsService userDetailsService;
+  private final JwtService jwtService;
 
   @Override
   public void register(NewMemberDto newMemberDto) {
@@ -55,21 +53,15 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  public boolean login(LoginDto loginDto) {
+  public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword()));
+      Member member = memberRepository.findByEmail(loginRequestDto.getEmail()).orElseThrow();
 
-    UserDetails userDetails = userDetailsService.loadUserByUsername(loginDto.getEmail());
+      // create JWT token
+      String jwtToken = jwtService.generateToken(member);
 
-    try {
-      authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
-
-      SecurityContextHolder.getContext().setAuthentication(
-          new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()));
-
-      return true;
-    } catch (AuthenticationException e) {
-      return false;
-    }
+      return LoginResponseDto.builder()
+              .token(jwtToken)
+              .build();
   }
-
 }
