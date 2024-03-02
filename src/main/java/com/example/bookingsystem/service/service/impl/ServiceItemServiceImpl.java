@@ -16,9 +16,6 @@ import com.example.bookingsystem.service.service.ServiceItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,19 +28,14 @@ public class ServiceItemServiceImpl implements ServiceItemService {
     private final ServiceItemRepository serviceItemRepository;
 
     @Override
-    public ServiceItemDetailDto createService(Long businessId, NewServiceItemDto newServiceDto) {
-
-        // get logged in member
-        Member member = getLoggedInMember();
+    public ServiceItemDetailDto createService(Long businessId, NewServiceItemDto newServiceDto, Member member) {
         // find the business
         Business business = getBusinessById(businessId);
-
         // if not business owner
-        if (!business.getMember().equals(member)){
+        if (!business.getMember().getId().equals(member.getId())){
             throw new NotBusinessOwnerException
                     ("You are not the owner of the business. Adding a service is only allowed for business owners.");
         }
-
         // create service
         ServiceItem serviceItem =ServiceItem.builder()
                 .name(newServiceDto.getName())
@@ -63,24 +55,13 @@ public class ServiceItemServiceImpl implements ServiceItemService {
         return business;
     }
 
-    private Member getLoggedInMember() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
-        return member;
-    }
-
     @Override
     @Transactional
-    public ServiceItemDetailDto updateService(Long serviceId, UpdateServiceItemDto updateServiceItemDto) {
-        // get logged in member
-        Member member = getLoggedInMember();
+    public ServiceItemDetailDto updateService(Long serviceId, UpdateServiceItemDto updateServiceItemDto, Member member) {
         // find the service
         ServiceItem serviceItem = getServiceItemById(serviceId);
-
         // check permission
-        if (!serviceItem.getBusiness().getMember().equals(member)){
+        if (!serviceItem.getBusiness().getMember().getId().equals(member.getId())){
             throw new NotBusinessOwnerException
                     ("You are not the owner of the business. Updating a service is only allowed for business owners.");
         }
@@ -96,13 +77,11 @@ public class ServiceItemServiceImpl implements ServiceItemService {
     }
 
     @Override
-    public void deleteService(Long serviceId) {
-        // get logged in member
-        Member member = getLoggedInMember();
+    public void deleteService(Long serviceId, Member member) {
         // find the service
         ServiceItem serviceItem = getServiceItemById(serviceId);
         // check permission
-        if (!serviceItem.getBusiness().getMember().equals(member)){
+        if (!serviceItem.getBusiness().getMember().getId().equals(member.getId())){
             throw new NotBusinessOwnerException
                     ("You are not the owner of the business. Deleting a service is only allowed for business owners.");
         }

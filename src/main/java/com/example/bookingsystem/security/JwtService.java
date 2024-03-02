@@ -3,15 +3,14 @@ package com.example.bookingsystem.security;
 import com.example.bookingsystem.member.domain.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +20,8 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "f63a51251e3599b72b9fb298e2c89238f4c194d2ea26374dd6d3726cb50ca937";
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
     public boolean isTokenValid(String token, UserDetails userDetails){
         String username = extractUsername(token);

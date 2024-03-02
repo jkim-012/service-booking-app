@@ -1,5 +1,6 @@
 package com.example.bookingsystem.service.controller;
 
+import com.example.bookingsystem.member.domain.Member;
 import com.example.bookingsystem.service.domain.ServiceItem;
 import com.example.bookingsystem.service.dto.NewServiceItemDto;
 import com.example.bookingsystem.service.dto.ServiceItemDetailDto;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
@@ -25,9 +27,10 @@ public class ServiceItemController {
     @PostMapping("/business/{businessId}/service")
     public ResponseEntity<ServiceItemDetailDto> createService(
             @PathVariable Long businessId,
-            @RequestBody NewServiceItemDto newServiceItemDto) {
+            @RequestBody NewServiceItemDto newServiceItemDto,
+            @AuthenticationPrincipal Member member) {
 
-        ServiceItemDetailDto serviceItemDetailDto = serviceItemService.createService(businessId, newServiceItemDto);
+        ServiceItemDetailDto serviceItemDetailDto = serviceItemService.createService(businessId, newServiceItemDto, member);
         return ResponseEntity.ok(serviceItemDetailDto);
     }
 
@@ -36,18 +39,20 @@ public class ServiceItemController {
     @PutMapping("/business/services/{serviceId}")
     public ResponseEntity<ServiceItemDetailDto> updateService(
             @PathVariable Long serviceId,
-            @RequestBody UpdateServiceItemDto updateServiceItemDto) {
+            @RequestBody UpdateServiceItemDto updateServiceItemDto,
+            @AuthenticationPrincipal Member member) {
 
-        ServiceItemDetailDto serviceItemDetailDto = serviceItemService.updateService(serviceId, updateServiceItemDto);
+        ServiceItemDetailDto serviceItemDetailDto = serviceItemService.updateService(serviceId, updateServiceItemDto, member);
         return ResponseEntity.ok(serviceItemDetailDto);
     }
 
     // API endpoint for deleting service (only business can use this feature)
     @DeleteMapping("/business/services/{serviceId}")
     public ResponseEntity<?> deleteService(
-            @PathVariable Long serviceId) {
+            @PathVariable Long serviceId,
+            @AuthenticationPrincipal Member member) {
 
-        serviceItemService.deleteService(serviceId);
+        serviceItemService.deleteService(serviceId, member);
         return ResponseEntity.ok("The service is now deleted.");
     }
 
