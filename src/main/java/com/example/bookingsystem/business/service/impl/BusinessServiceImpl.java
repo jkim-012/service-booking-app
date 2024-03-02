@@ -12,13 +12,9 @@ import com.example.bookingsystem.business.service.BusinessService;
 import com.example.bookingsystem.exception.BusinessNotFoundException;
 import com.example.bookingsystem.exception.UnauthorizedUserException;
 import com.example.bookingsystem.member.domain.Member;
-import com.example.bookingsystem.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class BusinessServiceImpl implements BusinessService {
 
     private final BusinessRepository businessRepository;
-    private final MemberRepository memberRepository;
 
     @Override
     public BusinessDetailDto addBusiness(NewBusinessDto newBusinessDto, Member member) {
@@ -44,9 +39,7 @@ public class BusinessServiceImpl implements BusinessService {
         // find the business
         Business business = getBusiness(businessId);
         // check if currently logged-in user is the owner
-        if (!business.getMember().equals(member)) {
-            throw new UnauthorizedUserException("Unauthorized: You do not have permission to update the business");
-        }
+        checkAuthorization(member, business);
         // update business address
         business.changeAddress(request);
         return UpdateAddressDto.Response.of(business);
@@ -55,36 +48,44 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     @Transactional
-    public void updateActiveStatus(Long businessId, boolean isActive) {
+    public void updateActiveStatus(Long businessId, boolean isActive, Member member) {
         // find the business
         Business business = getBusiness(businessId);
+        // check authorization
+        checkAuthorization(member, business);
         // update status
         business.changeActiveStatus(isActive);
     }
 
     @Override
     @Transactional
-    public void updateOpenStatus(Long businessId, boolean isCurrentlyOpen) {
+    public void updateOpenStatus(Long businessId, boolean isCurrentlyOpen, Member member) {
         // find the business
         Business business = getBusiness(businessId);
+        // check authorization
+        checkAuthorization(member, business);
         // update status
         business.changeOpenStatus(isCurrentlyOpen);
     }
 
     @Override
     @Transactional
-    public void updateHours(Long businessId, UpdateHoursDto updateHoursDto) {
+    public void updateHours(Long businessId, UpdateHoursDto updateHoursDto, Member member) {
         // find the business
         Business business = getBusiness(businessId);
+        // check authorization
+        checkAuthorization(member, business);
         // update hours
         business.changeHours(updateHoursDto);
     }
 
     @Override
     @Transactional
-    public void updateBasicInfo(Long businessId, UpdateBasicInfoDto updateBasicInfoDto) {
+    public void updateBasicInfo(Long businessId, UpdateBasicInfoDto updateBasicInfoDto, Member member) {
         // find the business
         Business business = getBusiness(businessId);
+        // check authorization
+        checkAuthorization(member, business);
         // update basic information
         business.changeBasicInfo(updateBasicInfoDto);
     }
@@ -101,9 +102,11 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public void deleteBusiness(Long businessId) {
+    public void deleteBusiness(Long businessId, Member member) {
         // find the business
         Business business = getBusiness(businessId);
+        // check authorization
+        checkAuthorization(member, business);
         // delete the business
         businessRepository.delete(business);
     }
@@ -114,11 +117,10 @@ public class BusinessServiceImpl implements BusinessService {
         return business;
     }
 
-    private Member getLoggedInMember() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
-        return member;
+    private static void checkAuthorization(Member member, Business business) {
+        if (!business.getMember().getId().equals(member.getId())) {
+            throw new UnauthorizedUserException("Unauthorized: You do not have permission to update the business");
+        }
     }
+
 }

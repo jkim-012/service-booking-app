@@ -15,12 +15,12 @@ import org.springframework.data.domain.Pageable;
 public interface BusinessService {
   BusinessDetailDto addBusiness(NewBusinessDto newBusinessDto, Member member);
   UpdateAddressDto.Response updateAddress(Long businessId, UpdateAddressDto.Request request, Member member);
-  void updateActiveStatus(Long businessId, boolean isActive);
-  void updateOpenStatus(Long businessId, boolean isCurrentlyOpen);
-  void updateHours(Long businessId, UpdateHoursDto updateHoursDto);
-  void updateBasicInfo(Long businessId, UpdateBasicInfoDto updateBasicInfoDto);
+  void updateActiveStatus(Long businessId, boolean isActive, Member member);
+  void updateOpenStatus(Long businessId, boolean isCurrentlyOpen, Member member);
+  void updateHours(Long businessId, UpdateHoursDto updateHoursDto, Member member);
+  void updateBasicInfo(Long businessId, UpdateBasicInfoDto updateBasicInfoDto, Member member);
   BusinessDetailDto findBusiness(Long businessId);
   Page<Business> getAllBusinesses(Pageable pageable);
-  void deleteBusiness(Long businessId);
+  void deleteBusiness(Long businessId, Member member);
 
 }

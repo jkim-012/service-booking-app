@@ -26,7 +26,7 @@ public class BusinessController {
     //test
     @GetMapping("/me")
     public String getCurrentUser(@AuthenticationPrincipal Member member) {
-        return member.getRole().toString();
+        return member.getUsername();
     }
 
     // API endpoint for adding a new business (only business can use this feature)
@@ -55,9 +55,10 @@ public class BusinessController {
     @PatchMapping("/business/{businessId}/active-status")
     public ResponseEntity<?> updateBusinessActiveStatus(
             @PathVariable Long businessId,
-            @RequestParam boolean isActive) {
+            @RequestParam boolean isActive,
+            @AuthenticationPrincipal Member member) {
 
-        businessService.updateActiveStatus(businessId, isActive);
+        businessService.updateActiveStatus(businessId, isActive, member);
         return ResponseEntity.ok("The business active status is updated.");
     }
 
@@ -65,9 +66,10 @@ public class BusinessController {
     @PatchMapping("/business/{businessId}/open-status")
     public ResponseEntity<?> updateBusinessOpenStatus(
             @PathVariable Long businessId,
-            @RequestParam boolean isCurrentlyOpen) {
+            @RequestParam boolean isCurrentlyOpen,
+            @AuthenticationPrincipal Member member) {
 
-        businessService.updateOpenStatus(businessId, isCurrentlyOpen);
+        businessService.updateOpenStatus(businessId, isCurrentlyOpen, member);
         return ResponseEntity.ok("The business open status is updated.");
     }
 
@@ -75,9 +77,10 @@ public class BusinessController {
     @PutMapping("/business/{businessId}/hours")
     public ResponseEntity<?> updateBusinessHours(
             @PathVariable Long businessId,
-            @RequestBody @Valid UpdateHoursDto updateHoursDto) {
+            @RequestBody @Valid UpdateHoursDto updateHoursDto,
+            @AuthenticationPrincipal Member member) {
 
-        businessService.updateHours(businessId, updateHoursDto);
+        businessService.updateHours(businessId, updateHoursDto, member);
         return ResponseEntity.ok("The business hours are updated.");
     }
 
@@ -85,18 +88,20 @@ public class BusinessController {
     @PutMapping("/business/{businessId}/basic-info")
     public ResponseEntity<?> updateBasicInfo(
             @PathVariable Long businessId,
-            @RequestBody @Valid UpdateBasicInfoDto updateBasicInfoDto) {
+            @RequestBody @Valid UpdateBasicInfoDto updateBasicInfoDto,
+            @AuthenticationPrincipal Member member) {
 
-        businessService.updateBasicInfo(businessId, updateBasicInfoDto);
+        businessService.updateBasicInfo(businessId, updateBasicInfoDto, member);
         return ResponseEntity.ok("The business basic information is updated.");
     }
 
     // API endpoint for deleting business (only business can use this feature)
     @DeleteMapping("/business/{businessId}")
     public ResponseEntity<?> deleteBusiness(
-            @PathVariable Long businessId) {
+            @PathVariable Long businessId,
+            @AuthenticationPrincipal Member member) {
 
-        businessService.deleteBusiness(businessId);
+        businessService.deleteBusiness(businessId, member);
         return ResponseEntity.ok("The business is now deleted.");
     }
 

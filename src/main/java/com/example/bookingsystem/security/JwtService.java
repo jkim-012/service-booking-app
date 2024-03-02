@@ -23,8 +23,6 @@ public class JwtService {
 
     private static final String SECRET_KEY = "f63a51251e3599b72b9fb298e2c89238f4c194d2ea26374dd6d3726cb50ca937";
 
-
-
     public boolean isTokenValid(String token, UserDetails userDetails){
         String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
