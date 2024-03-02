@@ -21,15 +21,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/member/**", "/").permitAll()
+                .antMatchers("/api/member/**", "/", "/api/me").permitAll()
                 .antMatchers("/api/business/**").hasRole("BUSINESS")
                 .antMatchers("/api/customer/**").hasRole("CUSTOMER")
                 .anyRequest().authenticated()
-                .and()
-                .httpBasic()
                 .and()
                 .logout()
                 .logoutUrl("/api/member/logout")
@@ -37,7 +34,8 @@ public class SecurityConfig {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .and()
-                .authenticationProvider(authenticationProvider);
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

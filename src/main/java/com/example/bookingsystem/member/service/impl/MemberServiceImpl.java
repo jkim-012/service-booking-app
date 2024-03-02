@@ -2,6 +2,7 @@ package com.example.bookingsystem.member.service.impl;
 
 import com.example.bookingsystem.exception.EmailAlreadyExistException;
 import com.example.bookingsystem.member.domain.Member;
+import com.example.bookingsystem.member.domain.Role;
 import com.example.bookingsystem.member.dto.LoginRequestDto;
 import com.example.bookingsystem.member.dto.LoginResponseDto;
 import com.example.bookingsystem.member.dto.NewMemberDto;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -54,14 +57,26 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDto) {
-      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword()));
-      Member member = memberRepository.findByEmail(loginRequestDto.getEmail()).orElseThrow();
+      try {
+          authenticationManager.authenticate(
+                  new UsernamePasswordAuthenticationToken(
+                          loginRequestDto.getEmail(), loginRequestDto.getPassword()));
 
-      // create JWT token
-      String jwtToken = jwtService.generateToken(member);
+          Member member = memberRepository.findByEmail(loginRequestDto.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+          Role role = member.getRole();
+          UserDetails userDetails = new org.springframework.security.core.userdetails.User(member.getEmail(), member.getPassword(), member.getAuthorities());
+          String jwtToken = jwtService.generateToken(userDetails, role);
 
-      return LoginResponseDto.builder()
-              .token(jwtToken)
-              .build();
+          return new LoginResponseDto(jwtToken);
+      } catch (AuthenticationException e) {
+          throw new RuntimeException("Invalid email/password supplied");
+      }
   }
+
+    @Override
+    public void logout(String token, Member member) {
+
+    }
+
+
 }

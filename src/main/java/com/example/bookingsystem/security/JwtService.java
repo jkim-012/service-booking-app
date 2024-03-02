@@ -1,7 +1,9 @@
 package com.example.bookingsystem.security;
 
+import com.example.bookingsystem.member.domain.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -54,20 +56,17 @@ public class JwtService {
                 .getPayload();
     }
 
-    public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(), userDetails);
-    }
+    public String generateToken(UserDetails userDetails, Role role) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", "ROLE_" + role.toString());
 
-    public String generateToken(Map<String, Object> extractClaims, UserDetails userDetails){
-        String token = Jwts.builder()
-                .claims(extractClaims)
+        return Jwts.builder()
                 .subject(userDetails.getUsername())
+                .claims(claims)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) //24 hours
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 hours
                 .signWith(getSignKey())
                 .compact();
-
-        return token;
     }
 
     private SecretKey getSignKey() {

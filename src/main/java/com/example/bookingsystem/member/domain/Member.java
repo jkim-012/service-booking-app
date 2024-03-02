@@ -23,70 +23,72 @@ import java.util.List;
 @Entity
 public class Member implements UserDetails {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column(nullable = false)
-  private String email; // login username
-  @Column(nullable = false)
-  private String password;
+    @Column(nullable = false)
+    private String email; // login username
+    @Column(nullable = false)
+    private String password;
 
-  @Column(nullable = false)
-  private String firstName;
-  @Column(nullable = false)
-  private String lastName;
-  @Column(nullable = false)
-  private String displayName;
+    @Column(nullable = false)
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
+    @Column(nullable = false)
+    private String displayName;
 
-  @Column(nullable = false)
-  private LocalDate dateOfBirth;
+    @Column(nullable = false)
+    private LocalDate dateOfBirth;
 
-  @Column(nullable = false)
-  @Enumerated(value = EnumType.STRING)
-  private Role role;
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
-  @Column(nullable = false)
-  @Enumerated(value = EnumType.STRING)
-  private SEX sex;
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private SEX sex;
 
-  // mapping
-  @OneToMany(mappedBy = "member")
-  private List<Business> businessList;
+    // mapping
+    @OneToMany(mappedBy = "member")
+    private List<Business> businessList;
 
-  @OneToMany(mappedBy = "member")
-  private List<Booking> bookingList;
+    @OneToMany(mappedBy = "member")
+    private List<Booking> bookingList;
 
-  @OneToMany(mappedBy = "member")
-  private List<Bookmark> bookmarkList;
+    @OneToMany(mappedBy = "member")
+    private List<Bookmark> bookmarkList;
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role.name()));
-  }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        String roleNameWithPrefix = "ROLE_" + role.toString();
+//        System.out.println(roleNameWithPrefix);
+        return List.of(new SimpleGrantedAuthority(roleNameWithPrefix));
+    }
 
-  @Override
-  public String getUsername() {
-    return email;
-  }
+    @Override
+    public String getUsername() {
+        return email;
+    }
 
-  @Override
-  public boolean isAccountNonExpired() {
-    return true;
-  }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-  @Override
-  public boolean isAccountNonLocked() {
-    return true;
-  }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-  @Override
-  public boolean isEnabled() {
-    return true;
-  }
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

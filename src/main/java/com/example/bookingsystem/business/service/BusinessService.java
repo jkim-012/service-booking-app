@@ -6,14 +6,15 @@ import com.example.bookingsystem.business.dto.NewBusinessDto;
 import com.example.bookingsystem.business.dto.UpdateAddressDto;
 import com.example.bookingsystem.business.dto.UpdateBasicInfoDto;
 import com.example.bookingsystem.business.dto.UpdateHoursDto;
+import com.example.bookingsystem.member.domain.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 ;
 
 public interface BusinessService {
-  BusinessDetailDto addBusiness(NewBusinessDto newBusinessDto);
-  UpdateAddressDto.Response updateAddress(Long businessId, UpdateAddressDto.Request request);
+  BusinessDetailDto addBusiness(NewBusinessDto newBusinessDto, Member member);
+  UpdateAddressDto.Response updateAddress(Long businessId, UpdateAddressDto.Request request, Member member);
   void updateActiveStatus(Long businessId, boolean isActive);
   void updateOpenStatus(Long businessId, boolean isCurrentlyOpen);
   void updateHours(Long businessId, UpdateHoursDto updateHoursDto);
