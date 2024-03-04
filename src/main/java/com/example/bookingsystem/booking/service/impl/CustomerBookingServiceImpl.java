@@ -34,35 +34,24 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     private final ServiceItemRepository serviceItemRepository;
 
     @Override
-    public CustomerBookingDetailDto createBooking(Long serviceId, NewBookingDto newBookingDto) {
-
-        // get logged in member and check if it is a customer
-        Member member = getLoggedInMember();
-        if (!member.getRole().equals(Role.CUSTOMER)) {
-            throw new NotCustomerException("Booking is only allowed for customers.");
-        }
-
+    public CustomerBookingDetailDto createBooking(Long serviceId, NewBookingDto newBookingDto, Member member) {
         // check if the business is active
-        // find the service
-        ServiceItem serviceItem = getServiceItemById(serviceId);
+        ServiceItem serviceItem = getServiceItemById(serviceId); // find service by id
         if (!serviceItem.getBusiness().getIsActive()) {
             throw new BookingNotAvailableException("Business is currently inactive. Please find other available services.");
         }
-
+        // date check
         // check the booking date is later than current time
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime bookingTime = newBookingDto.getScheduledAt();
-
         if (bookingTime.isBefore(currentTime)){
             throw new BookingNotAvailableException("Booking date must be later than the current time.");
         }
-
         // check if booking is available on the date/time
         Optional<Booking> byScheduledAt = bookingRepository.findByScheduledAt(newBookingDto.getScheduledAt());
         if (byScheduledAt.isPresent()) {
             throw new BookingNotAvailableException("The specified time slot is already booked.");
         }
-
         // book an appointment
         Booking booking = Booking.builder()
                 .scheduledAt(newBookingDto.getScheduledAt())
@@ -80,17 +69,14 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     @Override
     @Transactional
     public CustomerBookingDetailDto updateBookingByCustomer(
-            Long bookingId, UpdateBookingDto updateBookingDto) {
-
-        // get logged in member
-        Member member = getLoggedInMember();
+            Long bookingId, UpdateBookingDto updateBookingDto, Member member) {
 
         // find the booking to be updated
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException("Booking not found with ID: " + bookingId));
 
         // check the member's authority (logged in member should be the owner of the booking)
-        if (!member.equals(booking.getMember())) {
+        if (!member.getId().equals(booking.getMember().getId())) {
             throw new UnauthorizedUserException("Unauthorized: You do not have permission to update the booking");
         }
         // update
@@ -100,16 +86,13 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
 
     @Override
     @Transactional
-    public CustomerBookingDetailDto updateStatusByCustomer(Long bookingId, BookingStatus newStatus) {
-
-        // get logged in member
-        Member member = getLoggedInMember();
+    public CustomerBookingDetailDto updateStatusByCustomer(Long bookingId, BookingStatus newStatus, Member member) {
         // find the booking to be updated
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException("Booking not found with ID: " + bookingId));
 
         // check the member's authority
-        if (!member.equals(booking.getMember())) {
+        if (!member.getId().equals(booking.getMember().getId())) {
             throw new UnauthorizedUserException("Unauthorized: You do not have permission to update the booking status.");
         }
         // check the current status
@@ -122,15 +105,12 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
     }
 
     @Override
-    public CustomerBookingDetailDto getBookingByCustomer(Long bookingId) {
-        // get logged in member
-        Member member = getLoggedInMember();
+    public CustomerBookingDetailDto getBookingByCustomer(Long bookingId, Member member) {
         // find the booking
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new BookingNotFoundException("Booking not found with ID: " + bookingId));
-
         // check the member's authority
-        if (!member.equals(booking.getMember())) {
+        if (!member.getId().equals(booking.getMember().getId())) {
             throw new UnauthorizedUserException("Unauthorized: You do not have permission to read the booking details.");
         }
         return CustomerBookingDetailDto.of(booking);
@@ -138,13 +118,7 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
 
 
     @Override
-    public Page<Booking> getAllBookingsForCustomer(Pageable pageable) {
-        // get logged in member
-        Member member = getLoggedInMember();
-        // if business try to see the list, occur an exception
-        if (member.getRole().equals(Role.BUSINESS)) {
-            throw new UnauthorizedUserException("Unauthorized: You do not have permission to read the list");
-        }
+    public Page<Booking> getAllBookingsForCustomer(Pageable pageable, Member member) {
         // get member id
         Long memberId = member.getId();
         // find all bookings for the member
@@ -154,14 +128,6 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
             throw new BookingNotFoundException("There is no booking.");
         }
         return bookings;
-    }
-
-    private Member getLoggedInMember() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
-        return member;
     }
 
     private ServiceItem getServiceItemById(Long serviceId) {

@@ -8,12 +8,14 @@ import com.example.bookingsystem.booking.dto.customer.CustomerBookingListDto;
 import com.example.bookingsystem.booking.dto.customer.NewBookingDto;
 import com.example.bookingsystem.booking.dto.UpdateBookingDto;
 import com.example.bookingsystem.booking.service.CustomerBookingService;
+import com.example.bookingsystem.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
@@ -27,10 +29,11 @@ public class CustomerBookingController {
     @PostMapping("/customer/booking/services/{serviceId}")
     public ResponseEntity<CustomerBookingDetailDto> createBooking(
             @PathVariable Long serviceId,
-            @RequestBody NewBookingDto newBookingDto){
+            @RequestBody NewBookingDto newBookingDto,
+            @AuthenticationPrincipal Member member) {
 
         CustomerBookingDetailDto customerBookingDetailDto =
-                customerService.createBooking(serviceId, newBookingDto);
+                customerService.createBooking(serviceId, newBookingDto, member);
         return ResponseEntity.ok(customerBookingDetailDto);
     }
 
@@ -39,10 +42,11 @@ public class CustomerBookingController {
     @PutMapping("/customer/bookings/{bookingId}")
     public ResponseEntity<CustomerBookingDetailDto> updateBookingByCustomer(
             @PathVariable Long bookingId,
-            @RequestBody UpdateBookingDto updateBookingDto){
+            @RequestBody UpdateBookingDto updateBookingDto,
+            @AuthenticationPrincipal Member member) {
 
         CustomerBookingDetailDto customerBookingDetailDto =
-                customerService.updateBookingByCustomer(bookingId, updateBookingDto);
+                customerService.updateBookingByCustomer(bookingId, updateBookingDto, member);
         return ResponseEntity.ok(customerBookingDetailDto);
     }
 
@@ -50,20 +54,22 @@ public class CustomerBookingController {
     @PatchMapping("/customer/bookings/{bookingId}/status/{newStatus}")
     public ResponseEntity<CustomerBookingDetailDto> updateBookingStatusByCustomer(
             @PathVariable Long bookingId,
-            @PathVariable BookingStatus newStatus){
+            @PathVariable BookingStatus newStatus,
+            @AuthenticationPrincipal Member member) {
 
         CustomerBookingDetailDto customerBookingDetailDto =
-                customerService.updateStatusByCustomer(bookingId, newStatus);
+                customerService.updateStatusByCustomer(bookingId, newStatus, member);
         return ResponseEntity.ok(customerBookingDetailDto);
     }
 
     // API endpoint for reading booking details by customer
     @GetMapping("/customer/bookings/{bookingId}")
     public ResponseEntity<CustomerBookingDetailDto> getBookingDetailsForCustomer(
-            @PathVariable Long bookingId){
+            @PathVariable Long bookingId,
+            @AuthenticationPrincipal Member member) {
 
         CustomerBookingDetailDto customerBookingDetailDto =
-                customerService.getBookingByCustomer(bookingId);
+                customerService.getBookingByCustomer(bookingId, member);
         return ResponseEntity.ok(customerBookingDetailDto);
     }
 
@@ -73,14 +79,14 @@ public class CustomerBookingController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "sortBy", defaultValue = "scheduledAt") String sortBy,
-            @RequestParam(name = "sortOrder", defaultValue = "ASC") String sortOrder){
+            @RequestParam(name = "sortOrder", defaultValue = "ASC") String sortOrder,
+            @AuthenticationPrincipal Member member) {
 
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Booking> result = customerService.getAllBookingsForCustomer(pageable);
+        Page<Booking> result = customerService.getAllBookingsForCustomer(pageable, member);
         return ResponseEntity.ok(CustomerBookingListDto.of(result));
     }
-
 
 
 }
