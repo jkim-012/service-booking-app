@@ -1,5 +1,6 @@
 package com.example.bookingsystem.review.controller;
 
+import com.example.bookingsystem.member.domain.Member;
 import com.example.bookingsystem.review.domain.Review;
 import com.example.bookingsystem.review.dto.NewReviewDto;
 import com.example.bookingsystem.review.dto.ReviewDetailDto;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
@@ -22,23 +24,25 @@ public class ReviewController {
     private final ReviewService reviewService;
 
 
-    // API endpoint for creating a review for a complete booking
-    @PostMapping("/bookings/{bookingId}/reviews")
+    // API endpoint for creating a review for a complete booking (only customer can write a review)
+    @PostMapping("/customer/bookings/{bookingId}/reviews")
     public ResponseEntity<ReviewDetailDto> createReview(
             @PathVariable Long bookingId,
-            @RequestBody NewReviewDto newReviewDto) {
+            @RequestBody NewReviewDto newReviewDto,
+            @AuthenticationPrincipal Member member) {
 
-        ReviewDetailDto reviewDetailDto = reviewService.createReview(bookingId, newReviewDto);
+        ReviewDetailDto reviewDetailDto = reviewService.createReview(bookingId, newReviewDto, member);
         return ResponseEntity.ok(reviewDetailDto);
     }
 
-    // API endpoint for updating a review for a complete booking
-    @PutMapping("/bookings/reviews/{reviewId}")
+    // API endpoint for updating a review for a complete booking  (only customer can update their review)
+    @PutMapping("/customer/bookings/reviews/{reviewId}")
     public ResponseEntity<ReviewDetailDto> updateReview(
             @PathVariable Long reviewId,
-            @RequestBody UpdateReviewDto updateReviewDto) {
+            @RequestBody UpdateReviewDto updateReviewDto,
+            @AuthenticationPrincipal Member member) {
 
-        ReviewDetailDto reviewDetailDto = reviewService.updateReview(reviewId, updateReviewDto);
+        ReviewDetailDto reviewDetailDto = reviewService.updateReview(reviewId, updateReviewDto, member);
         return ResponseEntity.ok(reviewDetailDto);
     }
 
@@ -50,7 +54,6 @@ public class ReviewController {
         ReviewDetailDto reviewDetailDto = reviewService.getReview(reviewId);
         return ResponseEntity.ok(reviewDetailDto);
     }
-
 
     // API endpoint for getting all reviews by business
     @GetMapping("/bookings/reviews/{businessId}")

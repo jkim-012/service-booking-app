@@ -7,6 +7,7 @@ import com.example.bookingsystem.exception.BookingNotFoundException;
 import com.example.bookingsystem.exception.ReviewAlreadyExistException;
 import com.example.bookingsystem.exception.ReviewNotFoundException;
 import com.example.bookingsystem.exception.UnauthorizedUserException;
+import com.example.bookingsystem.member.domain.Member;
 import com.example.bookingsystem.review.domain.Review;
 import com.example.bookingsystem.review.dto.NewReviewDto;
 import com.example.bookingsystem.review.dto.ReviewDetailDto;
@@ -29,7 +30,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final BookingRepository bookingRepository;
 
     @Override
-    public ReviewDetailDto createReview(Long bookingId, NewReviewDto newReviewDto) {
+    public ReviewDetailDto createReview(Long bookingId, NewReviewDto newReviewDto, Member member) {
         // check if there is already a review for the booking id
         Optional<Review> byBookingId = reviewRepository.findByBookingId(bookingId);
         if (byBookingId.isPresent()) {
@@ -39,6 +40,10 @@ public class ReviewServiceImpl implements ReviewService {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(()-> new BookingNotFoundException("Booking not found with ID: " + bookingId));
 
+        // check authorization (currently logged-in user should be the owner of the booking)
+        if (!booking.getMember().getId().equals(member.getId())) {
+            throw new UnauthorizedUserException("Unauthorized: You do not have permission to write a review for the booking");
+        }
         // check booking status
         if (!booking.getStatus().equals(BookingStatus.COMPLETED)){
             throw new UnauthorizedUserException("Check the booking status: " + booking.getStatus());
@@ -57,14 +62,19 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public ReviewDetailDto updateReview(Long reviewId, UpdateReviewDto updateReviewDto) {
+    public ReviewDetailDto updateReview(Long reviewId, UpdateReviewDto updateReviewDto, Member member) {
         // find review
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(()-> new ReviewNotFoundException("Booking not found with ID: " + reviewId));
+        // check authorization (currently logged-in user should be the author of the review)
+        if (!review.getBooking().getMember().getId().equals(member.getId())) {
+            throw new UnauthorizedUserException("Unauthorized: You do not have permission to update the review");
+        }
         // update
         review.changeReviewDetails(updateReviewDto);
         return ReviewDetailDto.of(review);
     }
+
     @Override
     public ReviewDetailDto getReview(Long reviewId) {
         // find review
