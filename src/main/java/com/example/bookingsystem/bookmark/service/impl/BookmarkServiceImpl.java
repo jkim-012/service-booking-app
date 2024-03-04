@@ -12,9 +12,6 @@ import com.example.bookingsystem.exception.UnauthorizedUserException;
 import com.example.bookingsystem.member.domain.Member;
 import com.example.bookingsystem.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,17 +27,13 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final BusinessRepository businessRepository;
 
     @Override
-    public BookmarkDetailDto createBookmark(Long businessId, String bookmarkName) {
-
-        // get logged in member
-        Member member = getLoggedInMember();
+    public BookmarkDetailDto createBookmark(Long businessId, String bookmarkName, Member member) {
         // get business to be added
         Business business = getBusiness(businessId);
-
         // create bookmark
         Bookmark bookmark =  Bookmark.builder()
-                .name(bookmarkName)
-                .member(member)
+                .name(bookmarkName) // customer set the name
+                .member(member) //currently logged-in member
                 .business(business)
                 .build();
         // save
@@ -50,14 +43,12 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     @Transactional
-    public BookmarkDetailDto updateBookmark(Long bookmarkId, String newBookmarkName) {
-        // get logged in member
-        Member member = getLoggedInMember();
+    public BookmarkDetailDto updateBookmark(Long bookmarkId, String newBookmarkName, Member member) {
         // get bookmark
         Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
                 .orElseThrow(()-> new BookmarkNotFoundException("Bookmark not found with ID: " + bookmarkId));
         // check member's authority
-        if(!bookmark.getMember().equals(member)){
+        if(!bookmark.getMember().getId().equals(member.getId())){
             throw  new UnauthorizedUserException("Unauthorized: You do not have permission to update the booking status.");
         }
         // update
@@ -66,14 +57,12 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public void deleteBookmark(Long bookmarkId) {
-        // get logged in member
-        Member member = getLoggedInMember();
+    public void deleteBookmark(Long bookmarkId, Member member) {
         // get bookmark
         Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
                 .orElseThrow(()-> new BookmarkNotFoundException("Bookmark not found with ID: " + bookmarkId));
         // check member's authority
-        if(!bookmark.getMember().equals(member)){
+        if(!bookmark.getMember().getId().equals(member.getId())){
             throw  new UnauthorizedUserException("Unauthorized: You do not have permission to delete the booking status.");
         }
         // delete
@@ -81,11 +70,9 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public List<BookmarkDetailDto> getAllBookmarks() {
-        // get logged in member
-        Long memberId = getLoggedInMember().getId();
+    public List<BookmarkDetailDto> getAllBookmarks(Member member) {
         // get the list
-        List<Bookmark> bookmarkList = bookmarkRepository.getAllByMemberId(memberId);
+        List<Bookmark> bookmarkList = bookmarkRepository.getAllByMemberId(member.getId());
         // if member doesn't have any bookmark
         if (bookmarkList.isEmpty()){
             throw new BookmarkNotFoundException("There is no bookmark.");
@@ -93,18 +80,10 @@ public class BookmarkServiceImpl implements BookmarkService {
         return bookmarkList.stream().map(BookmarkDetailDto::of).collect(Collectors.toList());
     }
 
-
     private Business getBusiness(Long businessId) {
         Business business = businessRepository.findById(businessId)
                 .orElseThrow(()-> new BusinessNotFoundException("Business not found with ID: " + businessId));
         return business;
     }
 
-    private Member getLoggedInMember() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
-        return member;
-    }
 }
