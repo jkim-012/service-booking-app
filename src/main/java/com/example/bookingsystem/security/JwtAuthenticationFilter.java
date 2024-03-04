@@ -1,12 +1,9 @@
 package com.example.bookingsystem.security;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,6 +21,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsServiceImpl userDetailService;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Override
     protected void doFilterInternal(
@@ -44,32 +42,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwt = authHeader.substring(7);
         username = jwtService.extractUsername(jwt);
 
+        if (username == null) {
+            // Invalid JWT, send 401 Unauthorized response
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
         // authentication
-        try {
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                // Get user details
-                UserDetails userDetails = userDetailService.loadUserByUsername(username);
-                // Validate token
-                if (jwtService.isTokenValid(jwt, userDetails)) {
-                    UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    // Update authentication in security context holder
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                }
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // Get user details
+            UserDetails userDetails;
+
+            userDetails = userDetailService.loadUserByUsername(username);
+            // Validate token
+            if (jwtService.isTokenValid(jwt, userDetails)) {
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                // Update authentication in security context holder
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
-        } catch (ExpiredJwtException e) {
-            // token has expired, send error response with message
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT token has expired");
-            return;
-        } catch (UsernameNotFoundException e) {
-            // user not found, send error response with message
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
-            return;
-        } catch (MalformedJwtException e) {
-            // malformed JWT token, send error response with message
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT token");
-            return;
         }
 
         // next filter

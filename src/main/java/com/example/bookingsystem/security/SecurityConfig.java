@@ -17,28 +17,41 @@ public class SecurityConfig {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
+
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+
+                .and()
                 .authorizeRequests()
-                .antMatchers("/api/member/**", "/", "/api/me").permitAll()
+                .antMatchers("/api/member/**", "/", "/api/me", "/api/services/**", "/api/businesses/**").permitAll()
                 .antMatchers("/api/business/**").hasRole("BUSINESS")
                 .antMatchers("/api/customer/**").hasRole("CUSTOMER")
                 .anyRequest().authenticated()
+
                 .and()
                 .logout()
                 .logoutUrl("/api/member/logout")
                 .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+
                 .and()
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
 
         return http.build();
     }

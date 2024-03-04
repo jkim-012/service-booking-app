@@ -1,8 +1,7 @@
 package com.example.bookingsystem.security;
 
 import com.example.bookingsystem.member.domain.Role;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +26,7 @@ public class JwtService {
         String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
 
     public String extractUsername(String token) {
         return extractClaims(token, Claims::getSubject);
@@ -62,7 +62,7 @@ public class JwtService {
                 .subject(userDetails.getUsername())
                 .claims(claims)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 hours
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 2)) // 24 hours
                 .signWith(getSignKey())
                 .compact();
     }

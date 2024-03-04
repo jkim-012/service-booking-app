@@ -15,7 +15,7 @@ public class ResponseError {
   private String field;
   private String message;
 
-  // error 를 ResponseError 로 변경하는 method
+  // error -> ResponseError
   public static ResponseError of(FieldError e) {
     return ResponseError.builder()
         .message(e.getDefaultMessage())
