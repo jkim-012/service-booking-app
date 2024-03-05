@@ -59,7 +59,7 @@ Check salon availability with our app! 💇‍♂️💅 #ModernBooking #Conveni
 - **Update Service Information:** Business owners can modify their service details.
     
 - **Delete Service:** Business owners can remove their services from their business.
-  - 
+  
 - **Read Service Details:** Anyone can read service details.
     
 - **Read Service List:** Anyone can get a list of the registered services on the app based on the sort (name(a-z)…etc).
@@ -84,11 +84,9 @@ Check salon availability with our app! 💇‍♂️💅 #ModernBooking #Conveni
 ## 📝 Review Management
 - **Write a Review:** Customer can write a review for the completed booking. They can also rate their review.
   
-- **Modify Review:** Customers can provide feedback on services and modify their review.
+- **Modify Review:** Customers can provide feedback on services and modify their reviews.
 
 - **Read Review Details:** Anyone can read a review.
-
-
   
 - **Read Businesses’ Review List:** Anyone can read business’ reviews.
   
