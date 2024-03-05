@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class UpdateAddressDto {
 
   @Getter
@@ -18,8 +21,15 @@ public class UpdateAddressDto {
   public static class Request {
 
     private Province province;
+
+    @NotBlank(message = "City is a required field.")
     private String city;
+
+    @NotBlank(message = "Street address is a required field.")
     private String streetAddress;
+
+    @NotBlank(message = "Postal code is a required field.")
+    @Size(min = 6 , max = 6, message = "it must be 6 characters")
     private String postalCode;
   }
 

@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
@@ -28,7 +30,7 @@ public class ReviewController {
     @PostMapping("/customer/bookings/{bookingId}/reviews")
     public ResponseEntity<ReviewDetailDto> createReview(
             @PathVariable Long bookingId,
-            @RequestBody NewReviewDto newReviewDto,
+            @RequestBody @Valid NewReviewDto newReviewDto,
             @AuthenticationPrincipal Member member) {
 
         ReviewDetailDto reviewDetailDto = reviewService.createReview(bookingId, newReviewDto, member);
@@ -36,10 +38,10 @@ public class ReviewController {
     }
 
     // API endpoint for updating a review for a complete booking  (only customer can update their review)
-    @PutMapping("/customer/bookings/reviews/{reviewId}")
+    @PutMapping("/customer/reviews/{reviewId}")
     public ResponseEntity<ReviewDetailDto> updateReview(
             @PathVariable Long reviewId,
-            @RequestBody UpdateReviewDto updateReviewDto,
+            @RequestBody @Valid UpdateReviewDto updateReviewDto,
             @AuthenticationPrincipal Member member) {
 
         ReviewDetailDto reviewDetailDto = reviewService.updateReview(reviewId, updateReviewDto, member);
@@ -47,7 +49,7 @@ public class ReviewController {
     }
 
     // API endpoint for reading a review
-    @GetMapping("/bookings/reviews/{reviewId}")
+    @GetMapping("/reviews/{reviewId}")
     public ResponseEntity<ReviewDetailDto> readReviewDetails(
             @PathVariable Long reviewId) {
 
@@ -56,7 +58,7 @@ public class ReviewController {
     }
 
     // API endpoint for getting all reviews by business
-    @GetMapping("/bookings/reviews/{businessId}")
+    @GetMapping("/businesses/{businessId}/reviews")
     public ResponseEntity<ReviewListDto> getAllReviewsByBusiness(
             @PathVariable Long businessId,
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -71,7 +73,7 @@ public class ReviewController {
     }
 
     // API endpoint for searching all reviews by service name (keyword input)
-    @GetMapping("/bookings/reviews")
+    @GetMapping("/reviews/services")
     public ResponseEntity<ReviewListDto> getAllReviewsByServiceName(
             @RequestParam(name = "keyword") String keyword,
             @RequestParam(name = "page", defaultValue = "0") int page,

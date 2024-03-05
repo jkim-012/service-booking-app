@@ -79,7 +79,7 @@ public class CustomerBookingController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "sortBy", defaultValue = "scheduledAt") String sortBy,
-            @RequestParam(name = "sortOrder", defaultValue = "ASC") String sortOrder,
+            @RequestParam(name = "sortOrder", defaultValue = "DESC") String sortOrder,
             @AuthenticationPrincipal Member member) {
 
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortBy);

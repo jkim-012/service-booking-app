@@ -36,7 +36,8 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/member/**", "/", "/api/me", "/api/services/**", "/api/businesses/**").permitAll()
+                .antMatchers("/api/member/**", "/", "/api/me", "/api/services/**"
+                        , "/api/businesses/**", "/api/bookings/**", "/api/reviews/**").permitAll()
                 .antMatchers("/api/business/**").hasRole("BUSINESS")
                 .antMatchers("/api/customer/**").hasRole("CUSTOMER")
                 .anyRequest().authenticated()

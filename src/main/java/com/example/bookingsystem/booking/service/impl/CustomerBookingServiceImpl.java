@@ -2,23 +2,21 @@ package com.example.bookingsystem.booking.service.impl;
 
 import com.example.bookingsystem.booking.domain.Booking;
 import com.example.bookingsystem.booking.domain.BookingStatus;
+import com.example.bookingsystem.booking.dto.UpdateBookingDto;
 import com.example.bookingsystem.booking.dto.customer.CustomerBookingDetailDto;
 import com.example.bookingsystem.booking.dto.customer.NewBookingDto;
-import com.example.bookingsystem.booking.dto.UpdateBookingDto;
 import com.example.bookingsystem.booking.repository.BookingRepository;
 import com.example.bookingsystem.booking.service.CustomerBookingService;
-import com.example.bookingsystem.exception.*;
+import com.example.bookingsystem.exception.BookingNotAvailableException;
+import com.example.bookingsystem.exception.BookingNotFoundException;
+import com.example.bookingsystem.exception.ServiceItemNotFoundException;
+import com.example.bookingsystem.exception.UnauthorizedUserException;
 import com.example.bookingsystem.member.domain.Member;
-import com.example.bookingsystem.member.domain.Role;
-import com.example.bookingsystem.member.repository.MemberRepository;
 import com.example.bookingsystem.service.domain.ServiceItem;
 import com.example.bookingsystem.service.repository.ServiceItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +28,6 @@ import java.util.Optional;
 public class CustomerBookingServiceImpl implements CustomerBookingService {
 
     private final BookingRepository bookingRepository;
-    private final MemberRepository memberRepository;
     private final ServiceItemRepository serviceItemRepository;
 
     @Override
@@ -97,7 +94,7 @@ public class CustomerBookingServiceImpl implements CustomerBookingService {
         }
         // check the current status
         if (!booking.getStatus().equals(BookingStatus.BOOKED)) {
-            throw new UnauthorizedUserException("Unauthorized: You can't change the status.: " + booking.getStatus());
+            throw new UnauthorizedUserException("Unauthorized: You can't change the status. Current Status: " + booking.getStatus());
         }
         // change status (cancel or complete)
         booking.changeStatus(newStatus);
