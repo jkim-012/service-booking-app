@@ -10,6 +10,9 @@ The goal is to enhance efficiency and convenience for both customers and busines
 Say goodbye to traditional calls! 📞 
 Check salon availability with our app! 💇‍♂️💅 #ModernBooking #Convenience
 
+# Backend Project
+EaseBook is a backend project that develops server-side functionality to support the booking system. This includes database management, API development, authentication, and business logic implementation.
+
 
 # ERD
 ![ERD](./images/erd.png)
