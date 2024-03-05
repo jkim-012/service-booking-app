@@ -1,10 +1,10 @@
-# 📅 BookEase - Simplify Your Booking Experience
+# 📅 EaseBook - Simplify Your Booking Experience
 
 # Project Description 
 In today's digital age, people shop online, attend virtual meetings, and book trips through digital platforms. 
 However, despite the widespread adoption of digital technologies, many still resort to making phone calls when it comes to checking availability for various services.
 
-EaseBooking aims to revolutionize this process by providing a streamlined booking system catering to haircuts, nail services, and various other service-oriented businesses. 
+EaseBook aims to revolutionize this process by providing a streamlined booking system catering to haircuts, nail services, and various other service-oriented businesses. 
 The goal is to enhance efficiency and convenience for both customers and businesses by transitioning from traditional phone-based bookings to a modernized and user-friendly online system.
 
 Say goodbye to traditional calls! 📞 
