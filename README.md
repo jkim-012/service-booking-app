@@ -33,14 +33,14 @@ EaseBook is a backend project that develops server-side functionality to support
 ## 🏢 Business Management
 - **Register Business:** Service providers can register their businesses.
   
-- **Update Business Information:** Business can modify their business details.
+- **Update Business Information:** Business ownsers can modify their business details.
   - Update Business Address: Address includes province, city, street, postal code.
   - Update Business Active Status: If business active status is active, customers can book.
   - Update Business Open Status: If the business is currently operating or not.
   - Update Business Hours: Hours include open hour and close time.
   - Edit Other Basic Information: Basic information includes name, description, phone number.
   
-- **Delete Store:** Store owners can remove their business from the platform.
+- **Delete Store:** Business owners can remove their business from the platform.
   
 - **Read Business Details:** Anyone can read a business’ information.
   
@@ -77,21 +77,21 @@ EaseBook is a backend project that develops server-side functionality to support
 - **Update Booking Status:** Members can cancel or complete existing bookings. 
     
 - **Read Booking Details:**
-  - Business owner can read their business’ booking details.
-  - Customer can read their booking details.
+  - Business owners can read their business’ booking details.
+  - Customers can read their booking details.
     
 - **Read Booking List:**
-  - Business owner can read their business’s booking list.
-  - Customer can read their booking list.
+  - Business owners can read their business’s booking list.
+  - Customers can read their booking list.
     
 ## 📝 Review Management
-- **Write a Review:** Customer can write a review for the completed booking. They can also rate their review.
+- **Write a Review:** Customers can write a review for the completed booking. They can also rate their review.
   
 - **Modify Review:** Customers can provide feedback on services and modify their reviews.
 
 - **Read Review Details:** Anyone can read a review.
   
-- **Read Businesses’ Review List:** Anyone can read business’ reviews.
+- **Read Businesses’ Review List:** Anyone can read business reviews.
   
 - **Read Services’ Review List:** Anyone can search reviews by service name.
 
