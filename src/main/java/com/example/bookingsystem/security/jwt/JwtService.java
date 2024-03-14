@@ -1,4 +1,4 @@
-package com.example.bookingsystem.security;
+package com.example.bookingsystem.security.jwt;
 
 import com.example.bookingsystem.member.domain.Role;
 import io.jsonwebtoken.*;

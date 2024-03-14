@@ -1,5 +1,8 @@
 package com.example.bookingsystem.security;
 
+import com.example.bookingsystem.security.jwt.JwtAuthenticationEntryPoint;
+import com.example.bookingsystem.security.jwt.JwtAuthenticationFilter;
+import com.example.bookingsystem.security.jwt.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

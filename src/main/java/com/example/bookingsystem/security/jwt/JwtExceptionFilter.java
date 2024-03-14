@@ -1,5 +1,6 @@
-package com.example.bookingsystem.security;
+package com.example.bookingsystem.security.jwt;
 
+import com.example.bookingsystem.security.jwt.JwtErrorMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;

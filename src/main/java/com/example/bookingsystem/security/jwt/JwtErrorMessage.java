@@ -1,4 +1,4 @@
-package com.example.bookingsystem.security;
+package com.example.bookingsystem.security.jwt;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

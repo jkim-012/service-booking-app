@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
@@ -29,7 +31,7 @@ public class CustomerBookingController {
     @PostMapping("/customer/booking/services/{serviceId}")
     public ResponseEntity<CustomerBookingDetailDto> createBooking(
             @PathVariable Long serviceId,
-            @RequestBody NewBookingDto newBookingDto,
+            @RequestBody @Valid NewBookingDto newBookingDto,
             @AuthenticationPrincipal Member member) {
 
         CustomerBookingDetailDto customerBookingDetailDto =

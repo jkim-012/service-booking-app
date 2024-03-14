@@ -1,5 +1,6 @@
-package com.example.bookingsystem.security;
+package com.example.bookingsystem.security.jwt;
 
+import com.example.bookingsystem.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +22,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsServiceImpl userDetailService;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Override
     protected void doFilterInternal(
@@ -47,13 +47,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
         // authentication
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // Get user details
-            UserDetails userDetails;
-
-            userDetails = userDetailService.loadUserByUsername(username);
+            UserDetails userDetails = userDetailService.loadUserByUsername(username);
             // Validate token
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken =
@@ -63,7 +60,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
-
         // next filter
         filterChain.doFilter(request, response);
     }

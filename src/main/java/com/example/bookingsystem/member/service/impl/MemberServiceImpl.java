@@ -8,7 +8,7 @@ import com.example.bookingsystem.member.dto.LoginResponseDto;
 import com.example.bookingsystem.member.dto.NewMemberDto;
 import com.example.bookingsystem.member.repository.MemberRepository;
 import com.example.bookingsystem.member.service.MemberService;
-import com.example.bookingsystem.security.JwtService;
+import com.example.bookingsystem.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

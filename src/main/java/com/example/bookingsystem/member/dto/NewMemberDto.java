@@ -24,7 +24,7 @@ public class NewMemberDto {
   private String email;
 
   @NotBlank(message = "Password is a required field.")
-  @Size(min = 5, max = 20, message = "Password should be between 5 and 20 characters.")
+  @Size(min = 4, max = 20, message = "Password should be between 4 and 20 characters.")
   private String password;
 
   @NotBlank(message = "First name is a required field.")
