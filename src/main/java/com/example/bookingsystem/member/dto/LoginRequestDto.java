@@ -2,6 +2,7 @@ package com.example.bookingsystem.member.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import lombok.*;
 
@@ -12,10 +13,11 @@ import lombok.*;
 @AllArgsConstructor
 public class LoginRequestDto {
 
-  @Email(message = "이메일을 형식에 맞게 입력해 주세요.")
-  @NotBlank(message = "이메일은 필수 항목입니다.")
+  @Email(message = "Please enter a valid email address.")
+  @NotBlank(message = "Email is a required field.")
   private String email;
 
-  @NotBlank(message = "비밀번호는 필수 항목입니다.")
+  @NotBlank(message = "Password is a required field.")
+  @Size(min = 4, max = 20, message = "Password should be between 4 and 20 characters.")
   private String password;
 }
