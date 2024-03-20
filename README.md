@@ -8,7 +8,9 @@ EaseBook aims to revolutionize this process by providing a streamlined booking s
 The goal is to enhance efficiency and convenience for both customers and businesses by transitioning from traditional phone-based bookings to a modernized and user-friendly online system.
 
 Say goodbye to traditional calls! 📞 
-Check salon availability with our app! 💇‍♂️💅 #ModernBooking #Convenience
+Check salon availability with our app! 💇‍♂️💅 
+
+#ModernBooking #Convenience
 
 # Backend Project
 EaseBook is a backend project that develops server-side functionality to support the booking system. This includes database management, API development, authentication, and business logic implementation.
