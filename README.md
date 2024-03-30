@@ -31,6 +31,7 @@ EaseBook is a backend project that develops server-side functionality to support
   - JWT Token Usage: Clients include the JWT token in the Authorization header of requests.
   - Authentication: The server verifies the token's signature to authenticate users.
   - Authorization: Certain endpoints require specific roles or permissions, which are encoded in the JWT token.
+  - Token Expiry: JWT tokens have a limited validity period for enhanced security.
  
 ## 🏢 Business Management
 - **Register Business:** Service providers can register their businesses.
