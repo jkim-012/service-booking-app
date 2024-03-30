@@ -17,7 +17,7 @@ EaseBook is a backend project that develops server-side functionality to support
 
 
 # ERD
-![ERD](./images/erd.png)
+![ERD](./images/booking_erd.png)
 
 # Features 
 ## 🦱 Member Management
